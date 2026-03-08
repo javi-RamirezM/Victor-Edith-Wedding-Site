@@ -4,6 +4,14 @@ import GuestList from '@/components/GuestList'
 import { config } from '@/lib/config'
 import Link from 'next/link'
 
+function SectionDivider() {
+  return (
+    <div className="section-divider py-2" aria-hidden="true">
+      <span className="text-gold-light text-[10px]">◆</span>
+    </div>
+  )
+}
+
 export default function HomePage() {
   return (
     <main>
@@ -11,25 +19,26 @@ export default function HomePage() {
       <HeroSection />
 
       {/* Welcome section */}
-      <section className="py-20 md:py-32 bg-cream" aria-labelledby="welcome-heading">
-        <div className="max-w-2xl mx-auto px-6 text-center">
-          <p className="text-gold uppercase tracking-[0.3em] text-sm font-sans font-light mb-6">
+      <section className="py-24 md:py-32 bg-cream" aria-labelledby="welcome-heading">
+        <div className="max-w-xl mx-auto px-6 text-center">
+          <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-5">
             Bienvenidos
           </p>
           <h2
             id="welcome-heading"
-            className="font-display text-dark text-4xl md:text-5xl font-light leading-tight mb-8"
+            className="font-display italic text-dark font-light leading-tight mb-7"
+            style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)' }}
           >
             {config.texto_bienvenida}
           </h2>
-          <div className="gold-divider" aria-hidden="true" />
-          <p className="text-dark/70 font-sans mt-8 leading-relaxed">
-            Queremos que este día sea tan especial para vosotros como lo es para nosotros. 
+          <div className="gold-divider" aria-hidden="true">◆</div>
+          <p className="font-sans text-dark-soft text-sm mt-7 leading-relaxed">
+            Queremos que este día sea tan especial para vosotros como lo es para nosotros.
             Por favor, confirma tu asistencia para que podamos organizar todo con cariño.
           </p>
           <Link
             href="/confirmar"
-            className="inline-block mt-8 text-gold border border-gold px-8 py-3 text-sm uppercase tracking-widest font-sans hover:bg-gold hover:text-dark transition-all duration-300"
+            className="inline-block mt-8 border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-10 py-3.5 transition-all duration-300 hover:bg-gold hover:text-white"
             aria-label="Confirmar asistencia a la boda"
           >
             Confirmar Asistencia
@@ -37,18 +46,22 @@ export default function HomePage() {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* Venue and Map */}
       <VenueMap />
+
+      <SectionDivider />
 
       {/* Guest List */}
       <GuestList />
 
       {/* Footer */}
-      <footer className="py-12 bg-cream border-t border-dark/10 text-center">
-        <p className="font-display text-dark/50 text-lg font-light italic">
-          {config.novios.nombre1} & {config.novios.nombre2}
+      <footer className="py-14 bg-cream border-t border-dark/[0.06] text-center">
+        <p className="font-display italic text-dark/40 text-xl font-light">
+          {config.novios.nombre1} &amp; {config.novios.nombre2}
         </p>
-        <p className="text-dark/30 text-sm font-sans mt-2">
+        <p className="font-sans text-dark/25 text-xs uppercase tracking-[0.3em] mt-3">
           {new Date(config.fecha_boda).toLocaleDateString('es-ES', {
             day: 'numeric',
             month: 'long',
@@ -59,3 +72,4 @@ export default function HomePage() {
     </main>
   )
 }
+

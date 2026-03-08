@@ -11,49 +11,48 @@ export default function VenueMap() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible')
         })
       },
       { threshold: 0.1 }
     )
-
     const elements = sectionRef.current?.querySelectorAll('.animate-on-scroll')
     elements?.forEach((el) => observer.observe(el))
-
     return () => observer.disconnect()
   }, [])
 
   return (
     <section
       ref={sectionRef}
-      className="py-20 md:py-32 bg-cream"
+      className="py-24 md:py-32 bg-warm-white"
       aria-labelledby="venue-heading"
     >
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Header */}
+      <div className="max-w-5xl mx-auto px-6">
+
+        {/* Section header */}
         <div className="text-center mb-16 animate-on-scroll">
-          <p className="text-gold uppercase tracking-[0.3em] text-sm font-sans font-light mb-4">
+          <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
             Lugar de Celebración
           </p>
           <h2
             id="venue-heading"
-            className="font-display text-dark text-4xl md:text-5xl font-light mb-6"
+            className="font-display italic text-dark font-light mb-6"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
           >
             {config.venue.nombre}
           </h2>
-          <div className="gold-divider" aria-hidden="true" />
-          <p className="text-dark/70 font-sans mt-6 max-w-lg mx-auto">
+          <div className="gold-divider" aria-hidden="true">◆</div>
+          <p className="font-sans text-dark-soft text-sm mt-6 max-w-md mx-auto leading-relaxed">
             {config.venue.descripcion}
           </p>
         </div>
 
-        {/* Map + Info Grid */}
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          {/* Map embed */}
+        {/* Map + Info */}
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
+
+          {/* Map */}
           <div className="animate-on-scroll order-2 md:order-1">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-sm shadow-lg">
+            <div className="relative overflow-hidden shadow-xl" style={{ aspectRatio: '4/3' }}>
               <iframe
                 src={config.venue.google_maps_embed_url}
                 width="100%"
@@ -68,57 +67,56 @@ export default function VenueMap() {
             </div>
           </div>
 
-          {/* Venue Info */}
-          <div className="animate-on-scroll order-1 md:order-2">
-            <div className="space-y-8">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mt-1">
-                  <MapPin className="w-5 h-5 text-gold" aria-hidden="true" />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl text-dark font-medium mb-1">
-                    Dirección
-                  </h3>
-                  <p className="text-dark/70 font-sans">
-                    {config.venue.direccion}
-                  </p>
-                </div>
-              </div>
+          {/* Info */}
+          <div className="animate-on-scroll order-1 md:order-2 space-y-10 pt-2">
 
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mt-1">
-                  <Navigation className="w-5 h-5 text-gold" aria-hidden="true" />
-                </div>
-                <div>
-                  <h3 className="font-display text-xl text-dark font-medium mb-1">
-                    Cómo llegar
-                  </h3>
-                  <p className="text-dark/70 font-sans mb-3">
-                    Te recomendamos usar Google Maps para las mejores indicaciones de ruta.
-                  </p>
-                  <a
-                    href={`https://maps.google.com/?q=${encodeURIComponent(config.venue.direccion)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-gold border border-gold px-4 py-2 text-sm font-sans uppercase tracking-widest hover:bg-gold hover:text-dark transition-all duration-300"
-                    aria-label={`Abrir ${config.venue.nombre} en Google Maps`}
-                  >
-                    <Navigation className="w-4 h-4" aria-hidden="true" />
-                    Ver en Maps
-                  </a>
-                </div>
+            <div className="flex items-start gap-5">
+              <div className="flex-shrink-0 w-9 h-9 border border-gold/30 flex items-center justify-center mt-0.5">
+                <MapPin className="w-4 h-4 text-gold" aria-hidden="true" />
               </div>
-
-              {/* Decorative quote */}
-              <blockquote className="border-l-2 border-gold pl-6 mt-8">
-                <p className="font-display text-lg text-dark/80 italic font-light leading-relaxed">
-                  &ldquo;{config.venue.descripcion}&rdquo;
+              <div>
+                <h3 className="font-sans text-dark uppercase tracking-[0.2em] text-xs mb-2">
+                  Dirección
+                </h3>
+                <p className="font-display italic text-dark text-lg font-light leading-snug">
+                  {config.venue.direccion}
                 </p>
-              </blockquote>
+              </div>
             </div>
+
+            <div className="flex items-start gap-5">
+              <div className="flex-shrink-0 w-9 h-9 border border-gold/30 flex items-center justify-center mt-0.5">
+                <Navigation className="w-4 h-4 text-gold" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="font-sans text-dark uppercase tracking-[0.2em] text-xs mb-2">
+                  Cómo llegar
+                </h3>
+                <p className="font-sans text-dark-soft text-sm leading-relaxed mb-4">
+                  Te recomendamos usar Google Maps para las mejores indicaciones.
+                </p>
+                <a
+                  href={`https://maps.google.com/?q=${encodeURIComponent(config.venue.direccion)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-gold text-dark font-sans text-xs uppercase tracking-[0.25em] px-5 py-2.5 transition-all duration-300 hover:bg-gold hover:text-white"
+                  aria-label={`Abrir ${config.venue.nombre} en Google Maps`}
+                >
+                  <Navigation className="w-3 h-3" aria-hidden="true" />
+                  Ver en Maps
+                </a>
+              </div>
+            </div>
+
+            <blockquote className="border-l border-gold pl-5">
+              <p className="font-display italic text-dark/60 text-base font-light leading-relaxed">
+                &ldquo;{config.venue.descripcion}&rdquo;
+              </p>
+            </blockquote>
           </div>
         </div>
       </div>
     </section>
   )
 }
+

@@ -10,9 +10,12 @@ const config: Config = {
     extend: {
       colors: {
         cream: '#FAF7F2',
+        'warm-white': '#FFFDF9',
         gold: '#C9A96E',
+        'gold-light': '#E8D5B0',
         sage: '#8B9E77',
         dark: '#1C1C1C',
+        'dark-soft': '#3D3D3D',
       },
       fontFamily: {
         display: ['var(--font-cormorant)', 'Georgia', 'serif'],

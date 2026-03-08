@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getAttendees, Attendee } from '@/lib/sheets'
 import { getWeddingDate, getFridayDate } from '@/lib/config'
-import { Users, Calendar } from 'lucide-react'
+import { Users } from 'lucide-react'
 
 export default function AttendanceCalendar() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -13,9 +13,7 @@ export default function AttendanceCalendar() {
   const weddingDate = getWeddingDate()
   const fridayDate = getFridayDate()
 
-  const fridayAttendees = attendees.filter(
-    (a) => a.dias === 'viernes_sabado'
-  )
+  const fridayAttendees = attendees.filter((a) => a.dias === 'viernes_sabado')
   const saturdayAttendees = attendees
 
   const fridayTotal = fridayAttendees.reduce((sum, a) => sum + (a.total_asistentes || 1), 0)
@@ -32,121 +30,102 @@ export default function AttendanceCalendar() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible')
         })
       },
       { threshold: 0.05 }
     )
-
     const elements = sectionRef.current?.querySelectorAll('.animate-on-scroll')
     elements?.forEach((el) => observer.observe(el))
-
     return () => observer.disconnect()
   }, [attendees])
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" aria-label="Cargando asistentes" />
+      <div className="flex justify-center items-center min-h-[40vh]">
+        <div className="w-7 h-7 border border-gold/30 border-t-gold rounded-full animate-spin" aria-label="Cargando asistentes" />
       </div>
     )
   }
 
+  const days = [
+    {
+      label: 'Viernes',
+      date: fridayDate,
+      accentClass: 'border-sage/40 bg-sage/5',
+      dotClass: 'bg-sage',
+      totalPersons: fridayTotal,
+      list: fridayAttendees,
+      ariaLabel: 'Invitados del viernes',
+    },
+    {
+      label: 'Sábado',
+      date: weddingDate,
+      accentClass: 'border-gold/40 bg-gold/5',
+      dotClass: 'bg-gold',
+      totalPersons: saturdayTotal,
+      list: saturdayAttendees,
+      ariaLabel: 'Invitados del sábado',
+    },
+  ]
+
   return (
     <div ref={sectionRef} className="max-w-4xl mx-auto px-6 py-12">
-      {/* Summary */}
-      <div className="grid grid-cols-2 gap-4 mb-12 animate-on-scroll">
-        <div className="p-6 bg-cream border border-dark/10 text-center">
-          <Calendar className="w-6 h-6 text-gold mx-auto mb-3" aria-hidden="true" />
-          <span className="block font-display text-3xl text-dark font-light">
-            {fridayTotal}
-          </span>
-          <span className="text-dark/50 text-sm uppercase tracking-widest block font-sans">
-            Viernes
-          </span>
-        </div>
-        <div className="p-6 bg-cream border border-dark/10 text-center">
-          <Users className="w-6 h-6 text-gold mx-auto mb-3" aria-hidden="true" />
-          <span className="block font-display text-3xl text-dark font-light">
-            {saturdayTotal}
-          </span>
-          <span className="text-dark/50 text-sm uppercase tracking-widest block font-sans">
-            Sábado
-          </span>
-        </div>
+
+      {/* Stats row */}
+      <div className="grid grid-cols-2 gap-px mb-12 animate-on-scroll bg-dark/10">
+        {[
+          { value: fridayTotal, label: 'Personas el Viernes' },
+          { value: saturdayTotal, label: 'Personas el Sábado' },
+        ].map(({ value, label }) => (
+          <div key={label} className="bg-cream text-center py-8">
+            <span className="block font-display italic text-dark font-light leading-none"
+              style={{ fontSize: 'clamp(2.2rem, 6vw, 3.5rem)' }}>
+              {value}
+            </span>
+            <span className="block font-sans text-dark/40 uppercase tracking-[0.25em] text-[10px] mt-2">
+              {label}
+            </span>
+          </div>
+        ))}
       </div>
 
-      {/* Calendar Grid */}
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Friday */}
-        <div className="animate-on-scroll">
-          <div className="bg-sage/10 border border-sage/30 p-6">
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-2 h-2 rounded-full bg-sage" aria-hidden="true" />
-              <h2 className="font-display text-xl text-dark font-medium capitalize">
-                {fridayDate.toLocaleDateString('es-ES', { weekday: 'long' })}
+      {/* Day cards */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {days.map(({ label, date, accentClass, dotClass, totalPersons, list, ariaLabel }) => (
+          <div
+            key={label}
+            className={`animate-on-scroll border ${accentClass} p-7`}
+          >
+            {/* Day header */}
+            <div className="flex items-center gap-2.5 mb-1">
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dotClass}`} aria-hidden="true" />
+              <h2 className="font-display italic text-dark font-light text-xl capitalize">
+                {date.toLocaleDateString('es-ES', { weekday: 'long' })}
               </h2>
             </div>
-            <p className="text-dark/50 text-sm font-sans mb-4 pl-5">
-              {fridayDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+            <p className="font-sans text-dark/40 text-xs mb-5 pl-[18px]">
+              {date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
-            <div className="border-t border-sage/30 pt-4">
-              <p className="text-dark/50 text-xs uppercase tracking-widest font-sans mb-3">
-                {fridayTotal} personas confirmadas
-              </p>
-              {fridayAttendees.length === 0 ? (
-                <p className="text-dark/30 font-sans text-sm italic">
-                  Todavía nadie ha confirmado para este día
-                </p>
-              ) : (
-                <ul className="space-y-2" aria-label="Invitados del viernes">
-                  {fridayAttendees.map((attendee, i) => (
-                    <li key={i} className="flex items-center justify-between">
-                      <span className="font-display text-dark text-lg font-light">
-                        {attendee.nombre}
-                      </span>
-                      <span className="text-dark/40 text-sm font-sans flex items-center gap-1">
-                        <Users className="w-3 h-3" aria-hidden="true" />
-                        {attendee.total_asistentes}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        </div>
 
-        {/* Saturday */}
-        <div className="animate-on-scroll">
-          <div className="bg-gold/10 border border-gold/30 p-6">
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-2 h-2 rounded-full bg-gold" aria-hidden="true" />
-              <h2 className="font-display text-xl text-dark font-medium capitalize">
-                {weddingDate.toLocaleDateString('es-ES', { weekday: 'long' })}
-              </h2>
-            </div>
-            <p className="text-dark/50 text-sm font-sans mb-4 pl-5">
-              {weddingDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
-            <div className="border-t border-gold/30 pt-4">
-              <p className="text-dark/50 text-xs uppercase tracking-widest font-sans mb-3">
-                {saturdayTotal} personas confirmadas
+            {/* Divider */}
+            <div className="border-t border-dark/10 pt-5">
+              <p className="font-sans text-dark/35 uppercase tracking-[0.25em] text-[10px] mb-4">
+                {totalPersons} {totalPersons === 1 ? 'persona confirmada' : 'personas confirmadas'}
               </p>
-              {saturdayAttendees.length === 0 ? (
-                <p className="text-dark/30 font-sans text-sm italic">
-                  Todavía nadie ha confirmado para este día
+
+              {list.length === 0 ? (
+                <p className="font-sans text-dark/25 text-sm italic">
+                  Nadie ha confirmado para este día todavía
                 </p>
               ) : (
-                <ul className="space-y-2" aria-label="Invitados del sábado">
-                  {saturdayAttendees.map((attendee, i) => (
+                <ul className="space-y-2.5" aria-label={ariaLabel}>
+                  {list.map((attendee, i) => (
                     <li key={i} className="flex items-center justify-between">
-                      <span className="font-display text-dark text-lg font-light">
+                      <span className="font-display italic text-dark text-base font-light">
                         {attendee.nombre}
                       </span>
-                      <span className="text-dark/40 text-sm font-sans flex items-center gap-1">
+                      <span className="font-sans text-dark/30 text-xs flex items-center gap-1">
                         <Users className="w-3 h-3" aria-hidden="true" />
                         {attendee.total_asistentes}
                       </span>
@@ -156,8 +135,9 @@ export default function AttendanceCalendar() {
               )}
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   )
 }
+

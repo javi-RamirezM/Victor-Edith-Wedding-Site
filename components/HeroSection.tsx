@@ -13,7 +13,7 @@ interface TimeLeft {
 
 function calculateTimeLeft(targetDate: Date): TimeLeft {
   const difference = targetDate.getTime() - new Date().getTime()
-  
+
   if (difference <= 0) {
     return { days: 0, hours: 0, minutes: 0, seconds: 0 }
   }
@@ -46,47 +46,87 @@ export default function HeroSection() {
     day: 'numeric',
   })
 
+  const units = [
+    { value: timeLeft.days, label: 'Días' },
+    { value: timeLeft.hours, label: 'Horas' },
+    { value: timeLeft.minutes, label: 'Min' },
+    { value: timeLeft.seconds, label: 'Seg' },
+  ]
+
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{
-        backgroundImage: `url(${config.hero_image_url})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
+      className="relative min-h-screen bg-cream flex flex-col items-center justify-center px-6 overflow-hidden"
       aria-label="Sección principal de la boda"
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-dark/50" aria-hidden="true" />
-      
+      {/* Very subtle background pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(45deg, #C9A96E 0, #C9A96E 1px, transparent 0, transparent 50%)',
+          backgroundSize: '20px 20px',
+        }}
+        aria-hidden="true"
+      />
+
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        {/* Small label */}
+      <div className="relative z-10 w-full max-w-3xl mx-auto text-center">
+
+        {/* Eyebrow label */}
         <p
-          className="text-gold uppercase tracking-[0.3em] text-sm font-sans font-light mb-6 animate-fade-in"
-          style={{ animationDelay: '0.2s' }}
+          className="font-sans text-gold uppercase tracking-[0.4em] text-xs font-light mb-10 animate-fade-in opacity-0"
+          style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
         >
           Os invitamos a nuestra boda
         </p>
 
+        {/* Top decorative line */}
+        <div
+          className="gold-line mb-8 animate-fade-in opacity-0"
+          style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
+          aria-hidden="true"
+        />
+
         {/* Names */}
         <h1
-          className="font-display text-cream text-6xl md:text-8xl lg:text-9xl font-light leading-none mb-6 animate-fade-in-up"
-          style={{ animationDelay: '0.4s' }}
+          className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
+          style={{
+            fontSize: 'clamp(3.5rem, 10vw, 7rem)',
+            animationDelay: '0.45s',
+            animationFillMode: 'forwards',
+          }}
         >
           {config.novios.nombre1}
-          <span className="block text-gold font-light italic text-4xl md:text-5xl my-3">&amp;</span>
+        </h1>
+        <p
+          className="font-sans text-gold uppercase tracking-[0.5em] text-xs my-5 animate-fade-in opacity-0"
+          style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
+          aria-hidden="true"
+        >
+          &amp;
+        </p>
+        <h1
+          className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
+          style={{
+            fontSize: 'clamp(3.5rem, 10vw, 7rem)',
+            animationDelay: '0.75s',
+            animationFillMode: 'forwards',
+          }}
+        >
           {config.novios.nombre2}
         </h1>
 
-        {/* Gold divider */}
-        <div className="gold-divider my-8" aria-hidden="true" />
+        {/* Bottom decorative line */}
+        <div
+          className="gold-line mt-8 animate-fade-in opacity-0"
+          style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}
+          aria-hidden="true"
+        />
 
         {/* Date */}
         <p
-          className="text-cream/90 font-display text-xl md:text-2xl font-light capitalize mb-8 animate-fade-in-up"
-          style={{ animationDelay: '0.6s' }}
+          className="font-sans text-dark-soft uppercase tracking-[0.35em] text-xs mt-8 mb-12 animate-fade-in opacity-0"
+          style={{ animationDelay: '1s', animationFillMode: 'forwards' }}
         >
           {formattedDate}
         </p>
@@ -94,23 +134,26 @@ export default function HeroSection() {
         {/* Countdown */}
         {mounted && (
           <div
-            className="flex justify-center gap-6 md:gap-10 mb-10 animate-fade-in-up"
-            style={{ animationDelay: '0.8s' }}
+            className="flex items-center justify-center gap-0 mb-14 animate-fade-in opacity-0"
+            style={{ animationDelay: '1.1s', animationFillMode: 'forwards' }}
             aria-label="Cuenta atrás hasta la boda"
           >
-            {[
-              { value: timeLeft.days, label: 'Días' },
-              { value: timeLeft.hours, label: 'Horas' },
-              { value: timeLeft.minutes, label: 'Min' },
-              { value: timeLeft.seconds, label: 'Seg' },
-            ].map(({ value, label }) => (
-              <div key={label} className="text-center">
-                <span className="block font-display text-3xl md:text-5xl text-cream font-light leading-none">
-                  {String(value).padStart(2, '0')}
-                </span>
-                <span className="text-gold/80 text-xs uppercase tracking-widest mt-1 block font-sans">
-                  {label}
-                </span>
+            {units.map(({ value, label }, i) => (
+              <div key={label} className="flex items-center">
+                <div className="text-center px-5 md:px-8">
+                  <span className="block font-display italic text-dark font-light leading-none"
+                    style={{ fontSize: 'clamp(2.2rem, 6vw, 3.5rem)' }}>
+                    {String(value).padStart(2, '0')}
+                  </span>
+                  <span className="block font-sans text-gold uppercase tracking-[0.25em] text-[10px] mt-2">
+                    {label}
+                  </span>
+                </div>
+                {i < units.length - 1 && (
+                  <span className="text-gold-light font-light text-2xl select-none" aria-hidden="true">
+                    ·
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -118,23 +161,25 @@ export default function HeroSection() {
 
         {/* CTA */}
         <div
-          className="animate-fade-in-up"
-          style={{ animationDelay: '1s' }}
+          className="animate-fade-in opacity-0"
+          style={{ animationDelay: '1.25s', animationFillMode: 'forwards' }}
         >
           <Link
             href="/confirmar"
-            className="inline-block bg-gold text-dark px-10 py-4 text-sm uppercase tracking-[0.2em] font-sans font-medium hover:bg-gold/90 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 focus-visible:outline-gold"
+            className="inline-block border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-12 py-4 transition-all duration-300 hover:bg-gold hover:text-white focus-visible:outline-gold"
             aria-label="Confirmar asistencia a la boda"
           >
             Confirmar Asistencia
           </Link>
         </div>
+      </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
-          <div className="w-px h-12 bg-gold/60 mx-auto" />
-        </div>
+      {/* Scroll cue */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce" aria-hidden="true">
+        <span className="font-sans text-gold-light uppercase tracking-[0.3em] text-[9px]">scroll</span>
+        <div className="w-px h-8 bg-gold-light" />
       </div>
     </section>
   )
 }
+
