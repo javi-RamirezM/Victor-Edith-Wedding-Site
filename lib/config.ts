@@ -4,6 +4,8 @@ export interface VenueConfig {
   nombre: string
   direccion: string
   google_maps_embed_url: string
+  lat: number
+  lng: number
   descripcion: string
 }
 

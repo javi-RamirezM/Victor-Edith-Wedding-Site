@@ -3,12 +3,14 @@
     "nombre1": "Victor",
     "nombre2": "Edith"
   },
-  "fecha_boda": "2025-09-20",
+  "fecha_boda": "2026-08-29",
   "venue": {
     "nombre": "Masía Brugarolas",
     "direccion": "Camí de Brugarolas, 08183 Castellterçol, Barcelona",
     "google_maps_embed_url": "https://maps.google.com/maps?q=Masia+Brugarolas,Castelltercol,Barcelona&output=embed",
-    "descripcion": "Un lugar mágico entre olivos centenarios donde celebraremos nuestro amor"
+    "lat": 41.7598,
+    "lng": 2.1502,
+    "descripcion": "Un lugar mágico entre campos de lavanda donde celebraremos nuestro amor"
   },
   "hero_image_url": "/images/pareja.jpg",
   "texto_bienvenida": "Nos casamos y queremos celebrarlo contigo",

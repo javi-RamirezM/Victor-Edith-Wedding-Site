@@ -4,10 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { submitRSVP, RSVPData } from '@/lib/sheets'
 import { Heart, CheckCircle, AlertCircle } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 type FormStep = 'form' | 'submitting' | 'success' | 'error'
 
 export default function RSVPForm() {
+  const { t } = useLanguage()
   const [step, setStep] = useState<FormStep>('form')
   const [errors, setErrors] = useState<Partial<Record<keyof RSVPData, string>>>({})
   const [formData, setFormData] = useState<RSVPData>({
@@ -21,10 +23,10 @@ export default function RSVPForm() {
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof RSVPData, string>> = {}
     if (!formData.nombre.trim()) {
-      newErrors.nombre = 'Por favor, introduce tu nombre completo'
+      newErrors.nombre = t('rsvp.validationName')
     }
     if (formData.total_asistentes < 1 || formData.total_asistentes > 20) {
-      newErrors.total_asistentes = 'El número debe estar entre 1 y 20'
+      newErrors.total_asistentes = t('rsvp.validationCount')
     }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -57,21 +59,21 @@ export default function RSVPForm() {
         <div className="w-full max-w-lg bg-white shadow-xl px-10 py-14 text-center animate-fade-in-up">
           <CheckCircle className="w-10 h-10 text-gold mx-auto mb-6" aria-hidden="true" />
           <h2 className="font-display italic text-dark font-light mb-3" style={{ fontSize: '2.2rem' }}>
-            ¡Confirmado!
+            {t('rsvp.successTitle')}
           </h2>
           <div className="gold-divider my-5" aria-hidden="true">◆</div>
           <p className="font-sans text-dark-soft text-sm mb-1">
-            Gracias, <strong className="font-medium text-dark">{formData.nombre}</strong>.
+            {t('rsvp.successThanks')} <strong className="font-medium text-dark">{formData.nombre}</strong>.
           </p>
           <p className="font-sans text-dark-soft text-sm mb-10">
-            Hemos recibido tu confirmación. ¡Nos vemos en la boda!
+            {t('rsvp.successMessage')}
           </p>
           <Heart className="w-5 h-5 text-gold mx-auto mb-8" aria-hidden="true" />
           <Link
             href="/"
             className="inline-block border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-8 py-3 transition-all duration-300 hover:bg-gold hover:text-white"
           >
-            Volver al inicio
+            {t('rsvp.backToHome')}
           </Link>
         </div>
       </div>
@@ -84,16 +86,16 @@ export default function RSVPForm() {
         <div className="w-full max-w-lg bg-white shadow-xl px-10 py-14 text-center animate-fade-in-up">
           <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-6" aria-hidden="true" />
           <h2 className="font-display italic text-dark font-light mb-3" style={{ fontSize: '2.2rem' }}>
-            Algo salió mal
+            {t('rsvp.errorTitle')}
           </h2>
           <p className="font-sans text-dark-soft text-sm mb-10">
-            No pudimos guardar tu respuesta. Por favor, inténtalo de nuevo o contacta con nosotros.
+            {t('rsvp.errorMessage')}
           </p>
           <button
             onClick={() => setStep('form')}
             className="inline-block border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-8 py-3 transition-all duration-300 hover:bg-gold hover:text-white"
           >
-            Intentar de nuevo
+            {t('rsvp.retry')}
           </button>
         </div>
       </div>
@@ -105,14 +107,14 @@ export default function RSVPForm() {
       <div className="w-full max-w-lg bg-white shadow-xl px-8 md:px-12 py-12">
         <form
           onSubmit={handleSubmit}
-          aria-label="Formulario de confirmación de asistencia"
+          aria-label={t('rsvp.submitAria')}
           noValidate
           className="space-y-9"
         >
           {/* Nombre */}
           <div>
             <label htmlFor="nombre" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
-              Nombre completo <span className="text-gold" aria-hidden="true">*</span>
+              {t('rsvp.fullName')} <span className="text-gold" aria-hidden="true">*</span>
             </label>
             <input
               id="nombre"
@@ -120,7 +122,7 @@ export default function RSVPForm() {
               type="text"
               value={formData.nombre}
               onChange={handleChange}
-              placeholder="Ej: María García López"
+              placeholder={t('rsvp.fullNamePlaceholder')}
               required
               aria-required="true"
               aria-invalid={!!errors.nombre}
@@ -139,7 +141,7 @@ export default function RSVPForm() {
           {/* Total asistentes */}
           <div>
             <label htmlFor="total_asistentes" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
-              ¿Cuántos venís en total? <span className="text-gold" aria-hidden="true">*</span>
+              {t('rsvp.howMany')} <span className="text-gold" aria-hidden="true">*</span>
             </label>
             <input
               id="total_asistentes"
@@ -167,38 +169,38 @@ export default function RSVPForm() {
           {/* Acompañantes */}
           <div>
             <label htmlFor="nombres_acompanantes" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
-              Nombres de los acompañantes
+              {t('rsvp.companions')}
             </label>
             <textarea
               id="nombres_acompanantes"
               name="nombres_acompanantes"
               value={formData.nombres_acompanantes}
               onChange={handleChange}
-              placeholder="Uno por línea"
+              placeholder={t('rsvp.companionsPlaceholder')}
               rows={3}
               className="w-full bg-transparent border-b border-dark/15 focus:border-gold py-3 font-sans text-dark text-sm placeholder-dark/25 focus:outline-none transition-colors resize-none"
             />
             <p className="font-sans text-dark/30 text-[10px] mt-1.5">
-              Si vienes solo/a, puedes dejarlo vacío
+              {t('rsvp.companionsHint')}
             </p>
           </div>
 
           {/* Días */}
           <fieldset>
             <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
-              ¿Qué días asistiréis? <span className="text-gold" aria-hidden="true">*</span>
+              {t('rsvp.attendingDays')} <span className="text-gold" aria-hidden="true">*</span>
             </legend>
             <div className="space-y-3">
               {[
                 {
                   value: 'viernes_sabado' as const,
-                  title: 'Viernes + Sábado',
-                  subtitle: 'Boda completa (recomendado)',
+                  title: t('rsvp.fridaySaturday'),
+                  subtitle: t('rsvp.fridaySaturdaySubtitle'),
                 },
                 {
                   value: 'solo_sabado' as const,
-                  title: 'Solo Sábado',
-                  subtitle: 'Solo ceremonia y banquete',
+                  title: t('rsvp.onlySaturday'),
+                  subtitle: t('rsvp.onlySaturdaySubtitle'),
                 },
               ].map(({ value, title, subtitle }) => {
                 const selected = formData.dias === value
@@ -239,14 +241,14 @@ export default function RSVPForm() {
           {/* Alergias */}
           <div>
             <label htmlFor="alergias" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
-              Alergias o notas especiales
+              {t('rsvp.allergies')}
             </label>
             <textarea
               id="alergias"
               name="alergias"
               value={formData.alergias}
               onChange={handleChange}
-              placeholder="Opcional: alergias alimentarias, movilidad reducida, etc."
+              placeholder={t('rsvp.allergiesPlaceholder')}
               rows={3}
               className="w-full bg-transparent border-b border-dark/15 focus:border-gold py-3 font-sans text-dark text-sm placeholder-dark/25 focus:outline-none transition-colors resize-none"
             />
@@ -258,15 +260,15 @@ export default function RSVPForm() {
               type="submit"
               disabled={step === 'submitting'}
               className="w-full bg-dark text-cream font-sans text-xs uppercase tracking-[0.3em] py-4 transition-all duration-300 hover:bg-gold disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-gold"
-              aria-label="Enviar confirmación de asistencia"
+              aria-label={t('rsvp.submitAria')}
             >
               {step === 'submitting' ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-3.5 h-3.5 border border-cream/30 border-t-cream rounded-full animate-spin" aria-hidden="true" />
-                  Enviando...
+                  {t('rsvp.submitting')}
                 </span>
               ) : (
-                'Confirmar Asistencia'
+                t('rsvp.submit')
               )}
             </button>
           </div>
@@ -275,4 +277,3 @@ export default function RSVPForm() {
     </div>
   )
 }
-

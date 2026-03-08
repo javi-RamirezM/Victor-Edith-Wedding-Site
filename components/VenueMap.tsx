@@ -1,10 +1,15 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useEffect, useRef } from 'react'
 import { config } from '@/lib/config'
 import { MapPin, Navigation } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
+
+const LeafletMap = dynamic(() => import('./LeafletMap'), { ssr: false })
 
 export default function VenueMap() {
+  const { t } = useLanguage()
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,7 +37,7 @@ export default function VenueMap() {
         {/* Section header */}
         <div className="text-center mb-16 animate-on-scroll">
           <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
-            Lugar de Celebración
+            {t('venue.label')}
           </p>
           <h2
             id="venue-heading"
@@ -43,7 +48,7 @@ export default function VenueMap() {
           </h2>
           <div className="gold-divider" aria-hidden="true">◆</div>
           <p className="font-sans text-dark-soft text-sm mt-6 max-w-md mx-auto leading-relaxed">
-            {config.venue.descripcion}
+            {t('venue.descripcion')}
           </p>
         </div>
 
@@ -52,18 +57,15 @@ export default function VenueMap() {
 
           {/* Map */}
           <div className="animate-on-scroll order-2 md:order-1">
-            <div className="relative overflow-hidden shadow-xl" style={{ aspectRatio: '4/3' }}>
-              <iframe
-                src={config.venue.google_maps_embed_url}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title={`Mapa de ${config.venue.nombre}`}
-                className="absolute inset-0 w-full h-full"
-              />
+            <div
+              className="relative overflow-hidden shadow-xl"
+              style={{
+                height: 'clamp(280px, 40vw, 400px)',
+                borderRadius: '12px',
+                boxShadow: '0 8px 32px rgba(28,28,28,0.12)',
+              }}
+            >
+              <LeafletMap />
             </div>
           </div>
 
@@ -76,7 +78,7 @@ export default function VenueMap() {
               </div>
               <div>
                 <h3 className="font-sans text-dark uppercase tracking-[0.2em] text-xs mb-2">
-                  Dirección
+                  {t('venue.address')}
                 </h3>
                 <p className="font-display italic text-dark text-lg font-light leading-snug">
                   {config.venue.direccion}
@@ -90,27 +92,27 @@ export default function VenueMap() {
               </div>
               <div>
                 <h3 className="font-sans text-dark uppercase tracking-[0.2em] text-xs mb-2">
-                  Cómo llegar
+                  {t('venue.howToGet')}
                 </h3>
                 <p className="font-sans text-dark-soft text-sm leading-relaxed mb-4">
-                  Te recomendamos usar Google Maps para las mejores indicaciones.
+                  {t('venue.googleMapsRec')}
                 </p>
                 <a
                   href={`https://maps.google.com/?q=${encodeURIComponent(config.venue.direccion)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 border border-gold text-dark font-sans text-xs uppercase tracking-[0.25em] px-5 py-2.5 transition-all duration-300 hover:bg-gold hover:text-white"
-                  aria-label={`Abrir ${config.venue.nombre} en Google Maps`}
+                  aria-label={`${t('venue.viewOnMapsAria')} — ${config.venue.nombre}`}
                 >
                   <Navigation className="w-3 h-3" aria-hidden="true" />
-                  Ver en Maps
+                  {t('venue.viewOnMaps')}
                 </a>
               </div>
             </div>
 
             <blockquote className="border-l border-gold pl-5">
               <p className="font-display italic text-dark/60 text-base font-light leading-relaxed">
-                &ldquo;{config.venue.descripcion}&rdquo;
+                &ldquo;{t('venue.descripcion')}&rdquo;
               </p>
             </blockquote>
           </div>
@@ -119,4 +121,3 @@ export default function VenueMap() {
     </section>
   )
 }
-
