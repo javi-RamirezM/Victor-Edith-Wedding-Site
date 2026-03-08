@@ -22,7 +22,7 @@ export async function submitRSVP(data: RSVPData): Promise<boolean> {
   const scriptUrl = config.google_script_url
 
   if (!scriptUrl || scriptUrl === 'TU_APPS_SCRIPT_URL_AQUI') {
-    console.warn('Google Apps Script URL not configured. RSVP not saved.')
+    console.warn('Google Apps Script URL not configured. RSVP not saved (development mode only).')
     return true // Pretend success in development
   }
 

@@ -70,7 +70,7 @@ export default function AdminPage() {
 
   const handleSaveConfig = (e: React.FormEvent) => {
     e.preventDefault()
-    setSaveMessage('Los cambios se mostrarán después de actualizar el archivo config.json y redesplegar el sitio.')
+    setSaveMessage('Para aplicar estos cambios, actualiza manualmente el archivo config.json y redespliega el sitio en Netlify.')
     setTimeout(() => setSaveMessage(''), 5000)
   }
 
@@ -238,7 +238,7 @@ export default function AdminPage() {
               Editar Contenido
             </h2>
             <p className="text-dark/40 text-sm font-sans mt-2">
-              Nota: Para aplicar los cambios, actualiza el archivo config.json y redespliegue el sitio.
+              Nota: Para aplicar los cambios, actualiza manualmente el archivo config.json y redespliega el sitio.
             </p>
           </div>
 

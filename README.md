@@ -47,6 +47,21 @@ npm run dev
 
 El sitio exporta HTML estático. Conecta el repositorio en Netlify — el archivo `netlify.toml` configura automáticamente el build.
 
+### Pasos para desplegar:
+
+1. Sube el repositorio a GitHub
+2. En [Netlify](https://netlify.com), crea un nuevo sitio desde ese repositorio
+3. Build command: `npm run build` / Publish directory: `out`
+4. Netlify usará automáticamente la configuración de `netlify.toml`
+
+### Configuración requerida antes del despliegue:
+
+- **`config.json`** → Rellena todos los campos (`novios`, `fecha_boda`, `venue`, `google_script_url`, etc.)
+- **`public/images/pareja.jpg`** → Añade la foto de la pareja para el hero
+- **Google Apps Script** → Configura el webhook siguiendo los pasos de arriba y actualiza `google_script_url`
+
+> ⚠️ No hay variables de entorno necesarias. Toda la configuración va en `config.json`, que se incluye en el build estático.
+
 ## Estructura
 
 ```

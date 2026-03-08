@@ -10,6 +10,10 @@
  * 6. Copia la URL del despliegue y pégala en config.json como "google_script_url"
  */
 
+// ID de la hoja de cálculo de Google Sheets
+// Cómo encontrarlo: abre tu Google Sheet y mira la URL:
+//   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
+// Copia el valor de SPREADSHEET_ID (la cadena larga entre /d/ y /edit)
 const SPREADSHEET_ID = 'TU_SPREADSHEET_ID_AQUI'
 const SHEET_NAME = 'Respuestas'
 
