@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { submitRSVP, RSVPData } from '@/lib/sheets'
 import { Heart, CheckCircle, AlertCircle } from 'lucide-react'
 
@@ -80,12 +81,12 @@ export default function RSVPForm() {
             Hemos recibido tu confirmación. ¡Nos vemos en la boda!
           </p>
           <Heart className="w-6 h-6 text-gold mx-auto mb-8" aria-hidden="true" />
-          <a
+          <Link
             href="/"
             className="inline-block text-gold border border-gold px-8 py-3 text-sm uppercase tracking-widest font-sans hover:bg-gold hover:text-dark transition-all duration-300"
           >
             Volver al inicio
-          </a>
+          </Link>
         </div>
       </div>
     )
