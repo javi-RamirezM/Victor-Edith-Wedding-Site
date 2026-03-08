@@ -127,7 +127,7 @@ export default function AdminPage() {
           aria-label={t('admin.backToSite')}
         >
           <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" />
-          {t('admin.backToSite').replace('← ', '')}
+          {t('admin.backToSite')}
         </Link>
 
         <div className="w-full max-w-sm">
@@ -206,7 +206,7 @@ export default function AdminPage() {
               aria-label={t('admin.backToSite')}
             >
               <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" />
-              {t('admin.backToSite').replace('← ', '')}
+              {t('admin.backToSite')}
             </Link>
             <span className="text-cream/20" aria-hidden="true">|</span>
             <h1 className="font-display text-cream text-xl font-light">

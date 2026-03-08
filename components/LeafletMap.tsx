@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import type { Map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { config } from '@/lib/config'
 
@@ -14,16 +15,15 @@ const MARKER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 42" 
 
 export default function LeafletMap() {
   const mapRef = useRef<HTMLDivElement>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mapInstanceRef = useRef<any>(null)
+  const mapInstanceRef = useRef<Map | null>(null)
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return
 
-    import('leaflet').then((L) => {
+    import('leaflet').then(({ default: L }) => {
       if (!mapRef.current || mapInstanceRef.current) return
 
-      const map = L.default.map(mapRef.current, {
+      const map = L.map(mapRef.current, {
         center: [config.venue.lat, config.venue.lng],
         zoom: 14,
         zoomControl: false,
@@ -32,19 +32,17 @@ export default function LeafletMap() {
       })
 
       // CartoDB light tiles — warm, neutral tones, no token required
-      L.default
-        .tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com">CARTO</a>',
-          maxZoom: 19,
-        })
-        .addTo(map)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com">CARTO</a>',
+        maxZoom: 19,
+      }).addTo(map)
 
       // Minimal zoom control in bottom-right corner
-      L.default.control.zoom({ position: 'bottomright' }).addTo(map)
+      L.control.zoom({ position: 'bottomright' }).addTo(map)
 
       // Custom gold marker
-      const goldIcon = L.default.divIcon({
+      const goldIcon = L.divIcon({
         html: MARKER_SVG,
         className: '',
         iconSize: [28, 42],
@@ -52,8 +50,7 @@ export default function LeafletMap() {
         popupAnchor: [0, -44],
       })
 
-      L.default
-        .marker([config.venue.lat, config.venue.lng], { icon: goldIcon })
+      L.marker([config.venue.lat, config.venue.lng], { icon: goldIcon })
         .addTo(map)
         .bindPopup(
           `<span style="font-family:var(--font-cormorant),Georgia,serif;font-style:italic;font-size:1rem;color:#1C1C1C">${config.venue.nombre}</span>`,
