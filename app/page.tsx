@@ -1,7 +1,10 @@
+'use client'
+
 import HeroSection from '@/components/HeroSection'
 import VenueMap from '@/components/VenueMap'
 import { config } from '@/lib/config'
 import Link from 'next/link'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 function SectionDivider() {
   return (
@@ -12,6 +15,8 @@ function SectionDivider() {
 }
 
 export default function HomePage() {
+  const { t } = useLanguage()
+
   return (
     <main>
       {/* Hero fullscreen */}
@@ -21,7 +26,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 bg-cream" aria-labelledby="welcome-heading">
         <div className="max-w-xl mx-auto px-6 text-center">
           <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-5">
-            Bienvenidos
+            {t('welcome.label')}
           </p>
           <h2
             id="welcome-heading"
@@ -32,15 +37,14 @@ export default function HomePage() {
           </h2>
           <div className="gold-divider" aria-hidden="true">◆</div>
           <p className="font-sans text-dark-soft text-sm mt-7 leading-relaxed">
-            Queremos que este día sea tan especial para vosotros como lo es para nosotros.
-            Por favor, confirma tu asistencia para que podamos organizar todo con cariño.
+            {t('welcome.description')}
           </p>
           <Link
             href="/confirmar"
             className="inline-block mt-8 border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-10 py-3.5 transition-all duration-300 hover:bg-gold hover:text-white"
-            aria-label="Confirmar asistencia a la boda"
+            aria-label={t('welcome.confirmAriaLabel')}
           >
-            Confirmar Asistencia
+            {t('welcome.confirmCta')}
           </Link>
         </div>
       </section>
@@ -66,4 +70,3 @@ export default function HomePage() {
     </main>
   )
 }
-

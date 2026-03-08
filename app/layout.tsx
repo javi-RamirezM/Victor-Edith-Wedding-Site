@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { config } from '@/lib/config'
+import { LanguageProvider } from '@/contexts/LanguageContext'
+import LanguageSelector from '@/components/LanguageSelector'
 
 export const metadata: Metadata = {
   title: `Boda de ${config.novios.nombre1} & ${config.novios.nombre2}`,
@@ -24,8 +26,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="bg-cream text-dark antialiased">
-        {children}
+        <LanguageProvider>
+          <LanguageSelector />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   )
 }
+

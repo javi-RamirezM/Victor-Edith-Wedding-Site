@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { config, getWeddingDate } from '@/lib/config'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface TimeLeft {
   days: number
@@ -27,6 +28,7 @@ function calculateTimeLeft(targetDate: Date): TimeLeft {
 }
 
 export default function HeroSection() {
+  const { t, locale } = useLanguage()
   const weddingDate = getWeddingDate()
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft(weddingDate))
   const [mounted, setMounted] = useState(false)
@@ -39,7 +41,10 @@ export default function HeroSection() {
     return () => clearInterval(timer)
   }, [weddingDate])
 
-  const formattedDate = weddingDate.toLocaleDateString('es-ES', {
+  const dateLocale =
+    locale === 'de' ? 'de-DE' : locale === 'en' ? 'en-GB' : locale === 'ca' ? 'ca-ES' : 'es-ES'
+
+  const formattedDate = weddingDate.toLocaleDateString(dateLocale, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -47,16 +52,16 @@ export default function HeroSection() {
   })
 
   const units = [
-    { value: timeLeft.days, label: 'Días' },
-    { value: timeLeft.hours, label: 'Horas' },
-    { value: timeLeft.minutes, label: 'Min' },
-    { value: timeLeft.seconds, label: 'Seg' },
+    { value: timeLeft.days, label: t('countdown.days') },
+    { value: timeLeft.hours, label: t('countdown.hours') },
+    { value: timeLeft.minutes, label: t('countdown.min') },
+    { value: timeLeft.seconds, label: t('countdown.seg') },
   ]
 
   return (
     <section
       className="relative min-h-screen bg-cream flex flex-col items-center justify-center px-6 overflow-hidden"
-      aria-label="Sección principal de la boda"
+      aria-label={t('hero.aria')}
     >
       {/* Very subtle background pattern */}
       <div
@@ -77,7 +82,7 @@ export default function HeroSection() {
           className="font-sans text-gold uppercase tracking-[0.4em] text-xs font-light mb-10 animate-fade-in opacity-0"
           style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
         >
-          Os invitamos a nuestra boda
+          {t('hero.invitation')}
         </p>
 
         {/* Top decorative line */}
@@ -136,7 +141,7 @@ export default function HeroSection() {
           <div
             className="flex items-center justify-center gap-0 mb-14 animate-fade-in opacity-0"
             style={{ animationDelay: '1.1s', animationFillMode: 'forwards' }}
-            aria-label="Cuenta atrás hasta la boda"
+            aria-label={t('hero.countdownAria')}
           >
             {units.map(({ value, label }, i) => (
               <div key={label} className="flex items-center">
@@ -167,19 +172,18 @@ export default function HeroSection() {
           <Link
             href="/confirmar"
             className="inline-block border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-12 py-4 transition-all duration-300 hover:bg-gold hover:text-white focus-visible:outline-gold"
-            aria-label="Confirmar asistencia a la boda"
+            aria-label={t('welcome.confirmAriaLabel')}
           >
-            Confirmar Asistencia
+            {t('hero.confirmCta')}
           </Link>
         </div>
       </div>
 
       {/* Scroll cue */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce" aria-hidden="true">
-        <span className="font-sans text-gold-light uppercase tracking-[0.3em] text-[9px]">scroll</span>
+        <span className="font-sans text-gold-light uppercase tracking-[0.3em] text-[9px]">{t('hero.scroll')}</span>
         <div className="w-px h-8 bg-gold-light" />
       </div>
     </section>
   )
 }
-

@@ -1,14 +1,14 @@
+'use client'
+
 import AttendanceCalendar from '@/components/AttendanceCalendar'
 import { config } from '@/lib/config'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
-
-export const metadata = {
-  title: `Asistentes | Boda ${config.novios.nombre1} & ${config.novios.nombre2}`,
-  description: 'Lista de asistentes confirmados',
-}
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function AsistentesPage() {
+  const { t } = useLanguage()
+
   return (
     <main className="min-h-screen bg-cream">
       {/* Top nav */}
@@ -17,10 +17,10 @@ export default function AsistentesPage() {
           <Link
             href="/"
             className="flex items-center gap-1.5 font-sans text-dark/40 hover:text-dark transition-colors text-xs uppercase tracking-widest"
-            aria-label="Volver al inicio"
+            aria-label={t('asistentes.back')}
           >
             <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" />
-            Inicio
+            {t('asistentes.back')}
           </Link>
           <span className="font-display italic text-dark text-lg font-light">
             {config.novios.nombre1} &amp; {config.novios.nombre2}
@@ -31,17 +31,17 @@ export default function AsistentesPage() {
       {/* Page header */}
       <div className="max-w-4xl mx-auto px-6 pt-14 pb-4 text-center">
         <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
-          Confirmados
+          {t('asistentes.label')}
         </p>
         <h1
           className="font-display italic text-dark font-light mb-5"
           style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}
         >
-          Quién viene a la Boda
+          {t('asistentes.title')}
         </h1>
         <div className="gold-divider" aria-hidden="true">◆</div>
         <p className="font-sans text-dark-soft text-sm mt-5">
-          Lista actualizada en tiempo real
+          {t('asistentes.subtitle')}
         </p>
       </div>
 
@@ -57,4 +57,3 @@ export default function AsistentesPage() {
     </main>
   )
 }
-
