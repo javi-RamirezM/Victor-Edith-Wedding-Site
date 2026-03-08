@@ -1,6 +1,5 @@
 import HeroSection from '@/components/HeroSection'
 import VenueMap from '@/components/VenueMap'
-import GuestList from '@/components/GuestList'
 import { config } from '@/lib/config'
 import Link from 'next/link'
 
@@ -50,11 +49,6 @@ export default function HomePage() {
 
       {/* Venue and Map */}
       <VenueMap />
-
-      <SectionDivider />
-
-      {/* Guest List */}
-      <GuestList />
 
       {/* Footer */}
       <footer className="py-14 bg-cream border-t border-dark/[0.06] text-center">
