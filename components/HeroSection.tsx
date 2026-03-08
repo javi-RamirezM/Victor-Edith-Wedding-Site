@@ -93,33 +93,35 @@ export default function HeroSection() {
         />
 
         {/* Names */}
-        <h1
-          className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
-          style={{
-            fontSize: 'clamp(3.5rem, 10vw, 7rem)',
-            animationDelay: '0.45s',
-            animationFillMode: 'forwards',
-          }}
-        >
-          {config.novios.nombre1}
-        </h1>
-        <p
-          className="font-sans text-gold uppercase tracking-[0.5em] text-xs my-5 animate-fade-in opacity-0"
-          style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
-          aria-hidden="true"
-        >
-          &amp;
-        </p>
-        <h1
-          className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
-          style={{
-            fontSize: 'clamp(3.5rem, 10vw, 7rem)',
-            animationDelay: '0.75s',
-            animationFillMode: 'forwards',
-          }}
-        >
-          {config.novios.nombre2}
-        </h1>
+        <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap">
+          <h1
+            className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
+            style={{
+              fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+              animationDelay: '0.45s',
+              animationFillMode: 'forwards',
+            }}
+          >
+            {config.novios.nombre1}
+          </h1>
+          <p
+            className="font-sans text-gold uppercase tracking-[0.5em] text-xs animate-fade-in opacity-0"
+            style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
+            aria-hidden="true"
+          >
+            &amp;
+          </p>
+          <h1
+            className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
+            style={{
+              fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+              animationDelay: '0.75s',
+              animationFillMode: 'forwards',
+            }}
+          >
+            {config.novios.nombre2}
+          </h1>
+        </div>
 
         {/* Bottom decorative line */}
         <div
