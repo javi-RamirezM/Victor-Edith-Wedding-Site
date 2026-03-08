@@ -1,4 +1,4 @@
-import { config } from "./config";
+const PROXY_URL = "/.netlify/functions/rsvp";
 
 export interface RSVPData {
   nombre: string;
@@ -19,17 +19,15 @@ export interface Attendee {
 }
 
 export async function submitRSVP(data: RSVPData): Promise<boolean> {
-  const scriptUrl = config.google_script_url;
-
-  if (!scriptUrl || scriptUrl === "TU_APPS_SCRIPT_URL_AQUI") {
+  if (process.env.NODE_ENV === "development") {
     console.warn(
-      "Google Apps Script URL not configured. RSVP not saved (development mode only).",
+      "Development mode: RSVP not saved. Set GOOGLE_SCRIPT_URL and run `netlify dev` to test the proxy.",
     );
     return true; // Pretend success in development
   }
 
   try {
-    const response = await fetch(scriptUrl, {
+    const response = await fetch(PROXY_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,9 +52,7 @@ export async function submitRSVP(data: RSVPData): Promise<boolean> {
 }
 
 export async function getAttendees(): Promise<Attendee[]> {
-  const scriptUrl = config.google_script_url;
-
-  if (!scriptUrl || scriptUrl === "TU_APPS_SCRIPT_URL_AQUI") {
+  if (process.env.NODE_ENV === "development") {
     return [
       {
         nombre: "María García",
@@ -74,9 +70,8 @@ export async function getAttendees(): Promise<Attendee[]> {
   }
 
   try {
-    const response = await fetch(`${scriptUrl}?action=get_attendees`, {
+    const response = await fetch(PROXY_URL, {
       method: "GET",
-      // Sin headers Content-Type, sin mode
     });
 
     const data = await response.json();
