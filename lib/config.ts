@@ -24,6 +24,8 @@ export interface SiteConfig {
 
 export const config: SiteConfig = configData as SiteConfig
 
+// Note: Time is set to 12:00:00 local time. If timezone precision matters,
+// store the full datetime in config.json (e.g., "2025-09-20T12:00:00+02:00").
 export function getWeddingDate(): Date {
   return new Date(config.fecha_boda + 'T12:00:00')
 }

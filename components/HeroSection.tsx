@@ -76,7 +76,7 @@ export default function HeroSection() {
           style={{ animationDelay: '0.4s' }}
         >
           {config.novios.nombre1}
-          <span className="block text-gold font-light italic text-4xl md:text-5xl my-3">&</span>
+          <span className="block text-gold font-light italic text-4xl md:text-5xl my-3">&amp;</span>
           {config.novios.nombre2}
         </h1>
 
