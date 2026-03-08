@@ -1,9 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { config } from '@/lib/config'
 import { getAttendees, Attendee } from '@/lib/sheets'
-import { Lock, Download, Save, Eye, EyeOff } from 'lucide-react'
+import { Lock, Download, Eye, EyeOff } from 'lucide-react'
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+} from 'recharts'
+
+const GOLD = '#C9A96E'
+const SAGE = '#8B9E77'
+const DARK = '#1C1C1C'
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -12,19 +28,6 @@ export default function AdminPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [attendees, setAttendees] = useState<Attendee[]>([])
   const [loadingAttendees, setLoadingAttendees] = useState(false)
-  const [saveMessage, setSaveMessage] = useState('')
-
-  // Config form state
-  const [formConfig, setFormConfig] = useState({
-    nombre1: config.novios.nombre1,
-    nombre2: config.novios.nombre2,
-    fecha_boda: config.fecha_boda,
-    hero_image_url: config.hero_image_url,
-    venue_nombre: config.venue.nombre,
-    venue_direccion: config.venue.direccion,
-    texto_bienvenida: config.texto_bienvenida,
-    google_script_url: config.google_script_url,
-  })
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -68,12 +71,49 @@ export default function AdminPage() {
     URL.revokeObjectURL(url)
   }
 
-  const handleSaveConfig = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaveMessage('Para aplicar estos cambios, actualiza manualmente el archivo config.json y redespliega el sitio en Netlify.')
-    setTimeout(() => setSaveMessage(''), 5000)
-  }
+  // ── Derived stats ──────────────────────────────────────────────────
+  const stats = useMemo(() => {
+    const totalRespuestas = attendees.length
+    const totalPersonas = attendees.reduce((s, a) => s + (a.total_asistentes || 1), 0)
+    const personasViernes = attendees
+      .filter((a) => a.dias === 'viernes_sabado')
+      .reduce((s, a) => s + (a.total_asistentes || 1), 0)
+    const personasSabado = totalPersonas
+    return { totalRespuestas, totalPersonas, personasViernes, personasSabado }
+  }, [attendees])
 
+  const slotBarData = useMemo(() => {
+    const viernesSabado = attendees
+      .filter((a) => a.dias === 'viernes_sabado')
+      .reduce((s, a) => s + (a.total_asistentes || 1), 0)
+    const soloSabado = attendees
+      .filter((a) => a.dias === 'solo_sabado')
+      .reduce((s, a) => s + (a.total_asistentes || 1), 0)
+    return [
+      { slot: 'Viernes + Sábado', personas: viernesSabado },
+      { slot: 'Solo Sábado', personas: soloSabado },
+    ]
+  }, [attendees])
+
+  const timelineData = useMemo(() => {
+    if (attendees.length === 0) return []
+    const sorted = [...attendees].sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+    )
+    let cumulative = 0
+    const byDay: Record<string, number> = {}
+    for (const a of sorted) {
+      const day = new Date(a.timestamp).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+      })
+      cumulative += 1
+      byDay[day] = cumulative
+    }
+    return Object.entries(byDay).map(([fecha, confirmaciones]) => ({ fecha, confirmaciones }))
+  }, [attendees])
+
+  // ── Login screen ───────────────────────────────────────────────────
   if (!isAuthenticated) {
     return (
       <main className="min-h-screen bg-cream flex items-center justify-center px-6">
@@ -82,12 +122,8 @@ export default function AdminPage() {
             <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
               <Lock className="w-7 h-7 text-gold" aria-hidden="true" />
             </div>
-            <h1 className="font-display text-dark text-3xl font-light mb-2">
-              Backoffice
-            </h1>
-            <p className="text-dark/50 font-sans text-sm">
-              Área privada de la boda
-            </p>
+            <h1 className="font-display text-dark text-3xl font-light mb-2">Backoffice</h1>
+            <p className="text-dark/50 font-sans text-sm">Área privada de la boda</p>
           </div>
 
           <form onSubmit={handleLogin} aria-label="Formulario de inicio de sesión">
@@ -121,11 +157,7 @@ export default function AdminPage() {
                   className="absolute right-0 top-1/2 -translate-y-1/2 text-dark/30 hover:text-dark transition-colors"
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
               {passwordError && (
@@ -147,6 +179,7 @@ export default function AdminPage() {
     )
   }
 
+  // ── Authenticated dashboard ────────────────────────────────────────
   return (
     <main className="min-h-screen bg-cream">
       {/* Admin header */}
@@ -165,7 +198,174 @@ export default function AdminPage() {
       </header>
 
       <div className="max-w-5xl mx-auto px-6 py-12 space-y-16">
-        {/* Attendees section */}
+
+        {/* ── Chart 2: Stat cards ── */}
+        <section aria-labelledby="stats-heading">
+          <div className="mb-8">
+            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+              Estadísticas
+            </p>
+            <h2 id="stats-heading" className="font-display text-dark text-3xl font-light">
+              Resumen
+            </h2>
+          </div>
+
+          {loadingAttendees ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Respuestas recibidas', value: stats.totalRespuestas },
+                { label: 'Personas confirmadas', value: stats.totalPersonas },
+                { label: 'Personas el viernes', value: stats.personasViernes },
+                { label: 'Personas el sábado', value: stats.personasSabado },
+              ].map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="bg-warm-white border border-gold/20 rounded-sm px-5 py-6 flex flex-col gap-2"
+                >
+                  <span className="font-display text-dark text-5xl font-light leading-none">
+                    {value}
+                  </span>
+                  <span className="font-sans text-dark/50 text-xs uppercase tracking-widest leading-tight">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* ── Chart 1: Bar chart — asistentes por slot ── */}
+        <section aria-labelledby="bar-chart-heading">
+          <div className="mb-8">
+            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+              Distribución
+            </p>
+            <h2 id="bar-chart-heading" className="font-display text-dark text-3xl font-light">
+              Asistentes por Slot
+            </h2>
+          </div>
+
+          {loadingAttendees ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="bg-warm-white border border-gold/20 rounded-sm p-6">
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={slotBarData} barCategoryGap="40%">
+                  <CartesianGrid strokeDasharray="3 3" stroke={`${DARK}10`} vertical={false} />
+                  <XAxis
+                    dataKey="slot"
+                    tick={{ fontFamily: 'var(--font-dm-sans)', fontSize: 12, fill: `${DARK}80` }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontFamily: 'var(--font-dm-sans)', fontSize: 12, fill: `${DARK}80` }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    cursor={{ fill: `${GOLD}10` }}
+                    contentStyle={{
+                      fontFamily: 'var(--font-dm-sans)',
+                      fontSize: 13,
+                      border: `1px solid ${GOLD}40`,
+                      borderRadius: 0,
+                      background: '#FFFDF9',
+                      color: DARK,
+                    }}
+                    formatter={(value) => [value, 'Personas']}
+                  />
+                  <Bar dataKey="personas" radius={[2, 2, 0, 0]} maxBarSize={80}>
+                    <Cell fill={GOLD} />
+                    <Cell fill={SAGE} />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              {/* Second bar color legend */}
+              <div className="flex items-center gap-6 mt-4 justify-center">
+                <span className="flex items-center gap-2 font-sans text-xs text-dark/60">
+                  <span className="inline-block w-3 h-3 rounded-sm" style={{ background: GOLD }} />
+                  Viernes + Sábado
+                </span>
+                <span className="flex items-center gap-2 font-sans text-xs text-dark/60">
+                  <span className="inline-block w-3 h-3 rounded-sm" style={{ background: SAGE }} />
+                  Solo Sábado
+                </span>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* ── Chart 3: Timeline — confirmaciones acumuladas ── */}
+        <section aria-labelledby="timeline-heading">
+          <div className="mb-8">
+            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+              Historial
+            </p>
+            <h2 id="timeline-heading" className="font-display text-dark text-3xl font-light">
+              Línea de Tiempo de Confirmaciones
+            </h2>
+          </div>
+
+          {loadingAttendees ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+            </div>
+          ) : timelineData.length < 2 ? (
+            <p className="text-dark/40 font-sans text-center py-12">
+              No hay suficientes datos para mostrar la línea de tiempo
+            </p>
+          ) : (
+            <div className="bg-warm-white border border-gold/20 rounded-sm p-6">
+              <ResponsiveContainer width="100%" height={260}>
+                <LineChart data={timelineData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={`${DARK}10`} vertical={false} />
+                  <XAxis
+                    dataKey="fecha"
+                    tick={{ fontFamily: 'var(--font-dm-sans)', fontSize: 11, fill: `${DARK}80` }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontFamily: 'var(--font-dm-sans)', fontSize: 12, fill: `${DARK}80` }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      fontFamily: 'var(--font-dm-sans)',
+                      fontSize: 13,
+                      border: `1px solid ${GOLD}40`,
+                      borderRadius: 0,
+                      background: '#FFFDF9',
+                      color: DARK,
+                    }}
+                    formatter={(value) => [value, 'Confirmaciones acumuladas']}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="confirmaciones"
+                    stroke={SAGE}
+                    strokeWidth={2}
+                    dot={{ fill: SAGE, r: 3, strokeWidth: 0 }}
+                    activeDot={{ fill: GOLD, r: 5, strokeWidth: 0 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </section>
+
+        {/* ── Attendees table ── */}
         <section aria-labelledby="attendees-section">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -228,135 +428,6 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* Config editor */}
-        <section aria-labelledby="config-section">
-          <div className="mb-8">
-            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
-              Configuración
-            </p>
-            <h2 id="config-section" className="font-display text-dark text-3xl font-light">
-              Editar Contenido
-            </h2>
-            <p className="text-dark/40 text-sm font-sans mt-2">
-              Nota: Para aplicar los cambios, actualiza manualmente el archivo config.json y redespliega el sitio.
-            </p>
-          </div>
-
-          <form onSubmit={handleSaveConfig} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                { id: 'nombre1', label: 'Nombre del novio/a 1', key: 'nombre1' },
-                { id: 'nombre2', label: 'Nombre del novio/a 2', key: 'nombre2' },
-              ].map(({ id, label, key }) => (
-                <div key={id}>
-                  <label htmlFor={id} className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                    {label}
-                  </label>
-                  <input
-                    id={id}
-                    type="text"
-                    value={formConfig[key as keyof typeof formConfig]}
-                    onChange={(e) => setFormConfig((prev) => ({ ...prev, [key]: e.target.value }))}
-                    className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div>
-              <label htmlFor="fecha_boda" className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                Fecha de la boda
-              </label>
-              <input
-                id="fecha_boda"
-                type="date"
-                value={formConfig.fecha_boda}
-                onChange={(e) => setFormConfig((prev) => ({ ...prev, fecha_boda: e.target.value }))}
-                className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="hero_image_url" className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                URL de la foto hero
-              </label>
-              <input
-                id="hero_image_url"
-                type="text"
-                value={formConfig.hero_image_url}
-                onChange={(e) => setFormConfig((prev) => ({ ...prev, hero_image_url: e.target.value }))}
-                className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors"
-              />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="venue_nombre" className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                  Nombre del venue
-                </label>
-                <input
-                  id="venue_nombre"
-                  type="text"
-                  value={formConfig.venue_nombre}
-                  onChange={(e) => setFormConfig((prev) => ({ ...prev, venue_nombre: e.target.value }))}
-                  className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors"
-                />
-              </div>
-              <div>
-                <label htmlFor="venue_direccion" className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                  Dirección
-                </label>
-                <input
-                  id="venue_direccion"
-                  type="text"
-                  value={formConfig.venue_direccion}
-                  onChange={(e) => setFormConfig((prev) => ({ ...prev, venue_direccion: e.target.value }))}
-                  className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="texto_bienvenida" className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                Texto de bienvenida
-              </label>
-              <textarea
-                id="texto_bienvenida"
-                rows={2}
-                value={formConfig.texto_bienvenida}
-                onChange={(e) => setFormConfig((prev) => ({ ...prev, texto_bienvenida: e.target.value }))}
-                className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors resize-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="google_script_url" className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2">
-                URL del Google Apps Script
-              </label>
-              <input
-                id="google_script_url"
-                type="text"
-                value={formConfig.google_script_url}
-                onChange={(e) => setFormConfig((prev) => ({ ...prev, google_script_url: e.target.value }))}
-                className="w-full bg-transparent border-b-2 border-dark/20 focus:border-gold py-2 font-sans text-dark focus:outline-none transition-colors"
-              />
-            </div>
-
-            {saveMessage && (
-              <div className="bg-sage/10 border border-sage/30 p-4 text-sage font-sans text-sm" role="status">
-                {saveMessage}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className="flex items-center gap-2 bg-gold text-dark px-8 py-3 text-sm uppercase tracking-[0.2em] font-sans font-medium hover:bg-gold/90 transition-all duration-300"
-            >
-              <Save className="w-4 h-4" aria-hidden="true" />
-              Guardar configuración
-            </button>
-          </form>
-        </section>
       </div>
     </main>
   )
