@@ -61,10 +61,20 @@ function submitRSVP(data) {
       'Total Asistentes',
       'Nombres Acompañantes',
       'Días',
-      'Alergias/Notas'
+      'Alergias/Notas',
+      'Niños',
+      'Menú Infantil',
+      'Nº Menús Infantiles',
+      'Alojamiento',
+      'Alojamiento Días',
+      'Transporte'
     ])
-    sheet.getRange(1, 1, 1, 6).setFontWeight('bold')
+    sheet.getRange(1, 1, 1, 12).setFontWeight('bold')
   }
+
+  const alojamientoDias = data.alojamiento === 'si'
+    ? (data.alojamiento_dias === 'viernes_sabado' ? 'Viernes + Sábado' : 'Solo Sábado')
+    : ''
 
   sheet.appendRow([
     data.timestamp || new Date().toISOString(),
@@ -72,7 +82,13 @@ function submitRSVP(data) {
     data.total_asistentes || 1,
     data.nombres_acompanantes || '',
     data.dias === 'viernes_sabado' ? 'Viernes + Sábado' : 'Solo Sábado',
-    data.alergias || ''
+    data.alergias || '',
+    data.ninos === 'si' ? 'Sí' : 'No',
+    data.ninos === 'si' && data.menu_infantil === 'si' ? 'Sí' : 'No',
+    data.ninos === 'si' && data.menu_infantil === 'si' ? (data.num_menus_infantiles || 0) : 0,
+    data.alojamiento === 'si' ? 'Sí' : 'No',
+    alojamientoDias,
+    data.transporte === 'si' ? 'Sí' : 'No'
   ])
 
   return ContentService.createTextOutput(
@@ -98,7 +114,13 @@ function getAttendees() {
     total_asistentes: parseInt(row[2]) || 1,
     nombres_acompanantes: row[3],
     dias: row[4] === 'Viernes + Sábado' ? 'viernes_sabado' : 'solo_sabado',
-    alergias: row[5]
+    alergias: row[5],
+    ninos: row[6] === 'Sí' ? 'si' : 'no',
+    menu_infantil: row[7] === 'Sí' ? 'si' : 'no',
+    num_menus_infantiles: parseInt(row[8]) || 0,
+    alojamiento: row[9] === 'Sí' ? 'si' : 'no',
+    alojamiento_dias: row[10] === 'Viernes + Sábado' ? 'viernes_sabado' : (row[10] === 'Solo Sábado' ? 'solo_sabado' : ''),
+    transporte: row[11] === 'Sí' ? 'si' : 'no'
   }))
 
   return ContentService.createTextOutput(
@@ -114,6 +136,12 @@ function test() {
     nombres_acompanantes: 'Test Acompañante',
     dias: 'viernes_sabado',
     alergias: '',
+    ninos: 'si',
+    menu_infantil: 'si',
+    num_menus_infantiles: 1,
+    alojamiento: 'si',
+    alojamiento_dias: 'viernes_sabado',
+    transporte: 'no',
     timestamp: new Date().toISOString()
   }
 

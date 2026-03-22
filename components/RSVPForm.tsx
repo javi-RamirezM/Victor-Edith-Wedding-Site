@@ -18,6 +18,12 @@ export default function RSVPForm() {
     nombres_acompanantes: '',
     dias: 'viernes_sabado',
     alergias: '',
+    ninos: 'no',
+    menu_infantil: 'no',
+    num_menus_infantiles: 1,
+    alojamiento: 'no',
+    alojamiento_dias: '',
+    transporte: 'si',
   })
 
   const validate = (): boolean => {
@@ -44,10 +50,28 @@ export default function RSVPForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'total_asistentes' ? parseInt(value, 10) || 1 : value,
-    }))
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [name]: name === 'total_asistentes'
+          ? parseInt(value, 10) || 1
+          : name === 'num_menus_infantiles'
+            ? parseInt(value, 10) || 1
+            : value,
+      }
+      // Reset conditional fields when parent switches to 'no'
+      if (name === 'ninos' && value === 'no') {
+        updated.menu_infantil = 'no'
+        updated.num_menus_infantiles = 1
+      }
+      if (name === 'menu_infantil' && value === 'no') {
+        updated.num_menus_infantiles = 1
+      }
+      if (name === 'alojamiento' && value === 'no') {
+        updated.alojamiento_dias = ''
+      }
+      return updated
+    })
     if (errors[name as keyof RSVPData]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }))
     }
@@ -253,6 +277,228 @@ export default function RSVPForm() {
               className="w-full bg-transparent border-b border-dark/15 focus:border-gold py-3 font-sans text-dark text-sm placeholder-dark/25 focus:outline-none transition-colors resize-none"
             />
           </div>
+
+          {/* Niños */}
+          <fieldset>
+            <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
+              {t('rsvp.children')}
+            </legend>
+            <div className="flex gap-3">
+              {(['si', 'no'] as const).map((val) => {
+                const selected = formData.ninos === val
+                return (
+                  <label
+                    key={val}
+                    className={`flex-1 flex items-center justify-center gap-3 cursor-pointer p-3 border transition-colors ${
+                      selected ? 'border-gold bg-gold/5' : 'border-dark/10 hover:border-gold/40'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="ninos"
+                      value={val}
+                      checked={selected}
+                      onChange={handleChange}
+                      className="sr-only"
+                      aria-checked={selected}
+                    />
+                    <div
+                      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                        selected ? 'border-gold' : 'border-dark/25'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {selected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                    </div>
+                    <span className="font-sans text-dark text-sm">{val === 'si' ? t('rsvp.yes') : t('rsvp.no')}</span>
+                  </label>
+                )
+              })}
+            </div>
+          </fieldset>
+
+          {/* Menú infantil — conditional */}
+          {formData.ninos === 'si' && (
+            <fieldset>
+              <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
+                {t('rsvp.childrenMenu')}
+              </legend>
+              <div className="flex gap-3">
+                {(['si', 'no'] as const).map((val) => {
+                  const selected = formData.menu_infantil === val
+                  return (
+                    <label
+                      key={val}
+                      className={`flex-1 flex items-center justify-center gap-3 cursor-pointer p-3 border transition-colors ${
+                        selected ? 'border-gold bg-gold/5' : 'border-dark/10 hover:border-gold/40'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="menu_infantil"
+                        value={val}
+                        checked={selected}
+                        onChange={handleChange}
+                        className="sr-only"
+                        aria-checked={selected}
+                      />
+                      <div
+                        className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                          selected ? 'border-gold' : 'border-dark/25'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {selected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                      </div>
+                      <span className="font-sans text-dark text-sm">{val === 'si' ? t('rsvp.yes') : t('rsvp.no')}</span>
+                    </label>
+                  )
+                })}
+              </div>
+            </fieldset>
+          )}
+
+          {/* Nº menús infantiles — conditional */}
+          {formData.ninos === 'si' && formData.menu_infantil === 'si' && (
+            <div>
+              <label htmlFor="num_menus_infantiles" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
+                {t('rsvp.childrenMenuCount')}
+              </label>
+              <select
+                id="num_menus_infantiles"
+                name="num_menus_infantiles"
+                value={formData.num_menus_infantiles}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b border-dark/15 focus:border-gold py-3 font-sans text-dark text-sm focus:outline-none transition-colors"
+              >
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Alojamiento */}
+          <fieldset>
+            <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
+              {t('rsvp.accommodation')}
+            </legend>
+            <div className="flex gap-3">
+              {(['si', 'no'] as const).map((val) => {
+                const selected = formData.alojamiento === val
+                return (
+                  <label
+                    key={val}
+                    className={`flex-1 flex items-center justify-center gap-3 cursor-pointer p-3 border transition-colors ${
+                      selected ? 'border-gold bg-gold/5' : 'border-dark/10 hover:border-gold/40'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="alojamiento"
+                      value={val}
+                      checked={selected}
+                      onChange={handleChange}
+                      className="sr-only"
+                      aria-checked={selected}
+                    />
+                    <div
+                      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                        selected ? 'border-gold' : 'border-dark/25'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {selected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                    </div>
+                    <span className="font-sans text-dark text-sm">{val === 'si' ? t('rsvp.yes') : t('rsvp.no')}</span>
+                  </label>
+                )
+              })}
+            </div>
+          </fieldset>
+
+          {/* Alojamiento días — conditional */}
+          {formData.alojamiento === 'si' && (
+            <fieldset>
+              <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
+                {t('rsvp.accommodationWhen')}
+              </legend>
+              <div className="space-y-3">
+                {[
+                  { value: 'solo_sabado' as const, title: t('rsvp.accommodationSat') },
+                  { value: 'viernes_sabado' as const, title: t('rsvp.accommodationFriSat') },
+                ].map(({ value, title }) => {
+                  const selected = formData.alojamiento_dias === value
+                  return (
+                    <label
+                      key={value}
+                      className={`flex items-center gap-4 cursor-pointer p-4 border transition-colors ${
+                        selected ? 'border-gold bg-gold/5' : 'border-dark/10 hover:border-gold/40'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="alojamiento_dias"
+                        value={value}
+                        checked={selected}
+                        onChange={handleChange}
+                        className="sr-only"
+                        aria-checked={selected}
+                      />
+                      <div
+                        className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                          selected ? 'border-gold' : 'border-dark/25'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {selected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                      </div>
+                      <span className="font-sans text-dark text-sm font-medium">{title}</span>
+                    </label>
+                  )
+                })}
+              </div>
+            </fieldset>
+          )}
+
+          {/* Transporte */}
+          <fieldset>
+            <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
+              {t('rsvp.transport')}
+            </legend>
+            <div className="flex gap-3">
+              {(['si', 'no'] as const).map((val) => {
+                const selected = formData.transporte === val
+                return (
+                  <label
+                    key={val}
+                    className={`flex-1 flex items-center justify-center gap-3 cursor-pointer p-3 border transition-colors ${
+                      selected ? 'border-gold bg-gold/5' : 'border-dark/10 hover:border-gold/40'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="transporte"
+                      value={val}
+                      checked={selected}
+                      onChange={handleChange}
+                      className="sr-only"
+                      aria-checked={selected}
+                    />
+                    <div
+                      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                        selected ? 'border-gold' : 'border-dark/25'
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {selected && <div className="w-1.5 h-1.5 rounded-full bg-gold" />}
+                    </div>
+                    <span className="font-sans text-dark text-sm">{val === 'si' ? t('rsvp.yes') : t('rsvp.no')}</span>
+                  </label>
+                )
+              })}
+            </div>
+          </fieldset>
 
           {/* Submit */}
           <div className="pt-2">

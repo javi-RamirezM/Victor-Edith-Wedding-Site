@@ -17,6 +17,7 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Legend,
 } from 'recharts'
 
 const GOLD = '#C9A96E'
@@ -51,13 +52,34 @@ export default function AdminPage() {
   }
 
   const exportCSV = () => {
-    const headers = [t('admin.colName'), t('admin.colAttendees'), t('rsvp.companions'), t('admin.colDays'), t('rsvp.allergies'), t('admin.colDate')]
+    const headers = [
+      t('admin.colName'),
+      t('admin.colAttendees'),
+      t('rsvp.companions'),
+      t('admin.colDays'),
+      t('rsvp.allergies'),
+      t('admin.colChildren'),
+      t('admin.colChildrenMenu'),
+      t('admin.colChildrenMenuCount'),
+      t('admin.colAccommodation'),
+      t('admin.colAccommodationDays'),
+      t('admin.colTransport'),
+      t('admin.colDate'),
+    ]
     const rows = attendees.map((a) => [
       a.nombre,
       a.total_asistentes,
       a.nombres_acompanantes ?? '',
       a.dias === 'viernes_sabado' ? t('rsvp.fridaySaturday') : t('rsvp.onlySaturday'),
       a.alergias ?? '',
+      a.ninos === 'si' ? t('rsvp.yes') : t('rsvp.no'),
+      a.menu_infantil === 'si' ? t('rsvp.yes') : t('rsvp.no'),
+      a.ninos === 'si' && a.menu_infantil === 'si' ? (a.num_menus_infantiles ?? 0) : 0,
+      a.alojamiento === 'si' ? t('rsvp.yes') : t('rsvp.no'),
+      a.alojamiento === 'si'
+        ? (a.alojamiento_dias === 'viernes_sabado' ? t('rsvp.accommodationFriSat') : t('rsvp.accommodationSat'))
+        : '',
+      a.transporte === 'si' ? t('rsvp.yes') : t('rsvp.no'),
       a.timestamp,
     ])
 
@@ -82,7 +104,10 @@ export default function AdminPage() {
       .filter((a) => a.dias === 'viernes_sabado')
       .reduce((s, a) => s + (a.total_asistentes || 1), 0)
     const personasSabado = totalPersonas
-    return { totalRespuestas, totalPersonas, personasViernes, personasSabado }
+    const menuInfantiles = attendees.reduce((s, a) => s + (a.ninos === 'si' && a.menu_infantil === 'si' ? (a.num_menus_infantiles || 0) : 0), 0)
+    const buscanAlojamiento = attendees.filter((a) => a.alojamiento === 'si').length
+    const sinTransporte = attendees.filter((a) => a.transporte === 'no').length
+    return { totalRespuestas, totalPersonas, personasViernes, personasSabado, menuInfantiles, buscanAlojamiento, sinTransporte }
   }, [attendees])
 
   const slotBarData = useMemo(() => {
@@ -115,6 +140,12 @@ export default function AdminPage() {
     }
     return Object.entries(byDay).map(([fecha, confirmaciones]) => ({ fecha, confirmaciones }))
   }, [attendees])
+
+  const logisticsBarData = useMemo(() => [
+    { label: t('rsvp.children'), si: attendees.filter((a) => a.ninos === 'si').length, no: attendees.filter((a) => a.ninos !== 'si').length },
+    { label: t('rsvp.accommodation'), si: attendees.filter((a) => a.alojamiento === 'si').length, no: attendees.filter((a) => a.alojamiento !== 'si').length },
+    { label: t('rsvp.transport'), si: attendees.filter((a) => a.transporte === 'si').length, no: attendees.filter((a) => a.transporte !== 'si').length },
+  ], [attendees, t])
 
   // ── Login screen ───────────────────────────────────────────────────
   if (!isAuthenticated) {
@@ -246,6 +277,9 @@ export default function AdminPage() {
                 { label: t('admin.totalPeople'), value: stats.totalPersonas },
                 { label: t('admin.peopleFriday'), value: stats.personasViernes },
                 { label: t('admin.peopleSaturday'), value: stats.personasSabado },
+                { label: t('admin.childrenMenus'), value: stats.menuInfantiles },
+                { label: t('admin.needAccommodation'), value: stats.buscanAlojamiento },
+                { label: t('admin.noTransport'), value: stats.sinTransporte },
               ].map(({ label, value }) => (
                 <div
                   key={label}
@@ -384,6 +418,64 @@ export default function AdminPage() {
                     activeDot={{ fill: GOLD, r: 5, strokeWidth: 0 }}
                   />
                 </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </section>
+
+        {/* ── Chart 4: Logistics bar chart ── */}
+        <section aria-labelledby="logistics-heading">
+          <div className="mb-8">
+            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+              {t('admin.logistics')}
+            </p>
+            <h2 id="logistics-heading" className="font-display text-dark text-3xl font-light">
+              {t('admin.logisticsNeeds')}
+            </h2>
+          </div>
+
+          {loadingAttendees ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+            </div>
+          ) : attendees.length === 0 ? (
+            <p className="text-dark/40 font-sans text-center py-12">
+              {t('admin.noAttendees')}
+            </p>
+          ) : (
+            <div className="bg-warm-white border border-gold/20 rounded-sm p-6">
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={logisticsBarData} barCategoryGap="35%">
+                  <CartesianGrid strokeDasharray="3 3" stroke={`${DARK}10`} vertical={false} />
+                  <XAxis
+                    dataKey="label"
+                    tick={{ fontFamily: 'var(--font-dm-sans)', fontSize: 11, fill: `${DARK}80` }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontFamily: 'var(--font-dm-sans)', fontSize: 12, fill: `${DARK}80` }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    cursor={{ fill: `${GOLD}10` }}
+                    contentStyle={{
+                      fontFamily: 'var(--font-dm-sans)',
+                      fontSize: 13,
+                      border: `1px solid ${GOLD}40`,
+                      borderRadius: 0,
+                      background: '#FFFDF9',
+                      color: DARK,
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{ fontFamily: 'var(--font-dm-sans)', fontSize: 12 }}
+                  />
+                  <Bar dataKey="si" name={t('rsvp.yes')} fill={GOLD} radius={[2, 2, 0, 0]} maxBarSize={60} />
+                  <Bar dataKey="no" name={t('rsvp.no')} fill={SAGE} radius={[2, 2, 0, 0]} maxBarSize={60} />
+                </BarChart>
               </ResponsiveContainer>
             </div>
           )}
