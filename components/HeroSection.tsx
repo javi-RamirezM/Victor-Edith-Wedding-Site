@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { config, getWeddingDate } from '@/lib/config'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -61,22 +60,19 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden"
+      className="relative min-h-screen bg-cream flex flex-col items-center justify-center px-6 overflow-hidden"
       aria-label={t('hero.aria')}
     >
-      {/* Full-bleed couple photo */}
-      <div className="absolute inset-0">
-        <Image
-          src={config.hero_image_url}
-          alt={`${config.novios.nombre1} & ${config.novios.nombre2}`}
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
-        />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-dark/55" aria-hidden="true" />
-      </div>
+      {/* Very subtle background pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(45deg, #C9A96E 0, #C9A96E 1px, transparent 0, transparent 50%)',
+          backgroundSize: '20px 20px',
+        }}
+        aria-hidden="true"
+      />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-3xl mx-auto text-center">
@@ -99,7 +95,7 @@ export default function HeroSection() {
         {/* Names */}
         <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap">
           <h1
-            className="font-display italic text-cream font-light leading-none animate-fade-in-up opacity-0"
+            className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 7rem)',
               animationDelay: '0.45s',
@@ -116,7 +112,7 @@ export default function HeroSection() {
             &amp;
           </p>
           <h1
-            className="font-display italic text-cream font-light leading-none animate-fade-in-up opacity-0"
+            className="font-display italic text-dark font-light leading-none animate-fade-in-up opacity-0"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 7rem)',
               animationDelay: '0.75s',
@@ -136,7 +132,7 @@ export default function HeroSection() {
 
         {/* Date */}
         <p
-          className="font-sans text-cream/70 uppercase tracking-[0.35em] text-xs mt-8 mb-12 animate-fade-in opacity-0"
+          className="font-sans text-dark-soft uppercase tracking-[0.35em] text-xs mt-8 mb-12 animate-fade-in opacity-0"
           style={{ animationDelay: '1s', animationFillMode: 'forwards' }}
         >
           {formattedDate}
@@ -152,7 +148,7 @@ export default function HeroSection() {
             {units.map(({ value, label }, i) => (
               <div key={label} className="flex items-center">
                 <div className="text-center px-5 md:px-8">
-                  <span className="block font-display italic text-cream font-light leading-none"
+                  <span className="block font-display italic text-dark font-light leading-none"
                     style={{ fontSize: 'clamp(2.2rem, 6vw, 3.5rem)' }}>
                     {String(value).padStart(2, '0')}
                   </span>
@@ -177,7 +173,7 @@ export default function HeroSection() {
         >
           <Link
             href="/confirmar"
-            className="inline-block border border-gold/80 text-cream font-sans text-xs uppercase tracking-[0.3em] px-12 py-4 transition-all duration-300 hover:bg-gold hover:border-gold hover:text-white focus-visible:outline-gold"
+            className="inline-block border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-12 py-4 transition-all duration-300 hover:bg-gold hover:text-white focus-visible:outline-gold"
             aria-label={t('welcome.confirmAriaLabel')}
           >
             {t('hero.confirmCta')}
@@ -187,8 +183,8 @@ export default function HeroSection() {
 
       {/* Scroll cue */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce" aria-hidden="true">
-        <span className="font-sans text-cream/50 uppercase tracking-[0.3em] text-[9px]">{t('hero.scroll')}</span>
-        <div className="w-px h-8 bg-cream/30" />
+        <span className="font-sans text-gold-light uppercase tracking-[0.3em] text-[9px]">{t('hero.scroll')}</span>
+        <div className="w-px h-8 bg-gold-light" />
       </div>
     </section>
   )

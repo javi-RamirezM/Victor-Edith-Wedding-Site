@@ -1,6 +1,7 @@
 'use client'
 
 import HeroSection from '@/components/HeroSection'
+import CouplePhotoSection from '@/components/CouplePhotoSection'
 import VenueMap from '@/components/VenueMap'
 import { config } from '@/lib/config'
 import Link from 'next/link'
@@ -21,6 +22,9 @@ export default function HomePage() {
     <main>
       {/* Hero fullscreen */}
       <HeroSection />
+
+      {/* Couple photo — second block */}
+      <CouplePhotoSection />
 
       {/* Welcome section */}
       <section className="py-24 md:py-32 bg-cream" aria-labelledby="welcome-heading">
