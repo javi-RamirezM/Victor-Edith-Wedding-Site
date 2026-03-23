@@ -67,6 +67,11 @@
     "validationName": "Please enter your full name",
     "validationCount": "The number must be between 1 and 20"
   },
+  "couple": {
+    "label": "Us",
+    "title": "A love story",
+    "aria": "Photograph of the couple"
+  },
   "asistentes": {
     "title": "Who is coming to the Wedding",
     "label": "Confirmed",

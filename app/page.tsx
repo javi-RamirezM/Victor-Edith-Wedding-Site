@@ -2,6 +2,7 @@
 
 import HeroSection from '@/components/HeroSection'
 import VenueMap from '@/components/VenueMap'
+import CouplePhotoSection from '@/components/CouplePhotoSection'
 import { config } from '@/lib/config'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -50,6 +51,9 @@ export default function HomePage() {
       </section>
 
       <SectionDivider />
+
+      {/* Couple photo */}
+      <CouplePhotoSection />
 
       {/* Venue and Map */}
       <VenueMap />
