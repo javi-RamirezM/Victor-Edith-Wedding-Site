@@ -1,9 +1,9 @@
 'use client'
 
 import HeroSection from '@/components/HeroSection'
-import CouplePhotoSection from '@/components/CouplePhotoSection'
 import VenueMap from '@/components/VenueMap'
 import { config } from '@/lib/config'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 
@@ -23,29 +23,37 @@ export default function HomePage() {
       {/* Hero fullscreen */}
       <HeroSection />
 
-      {/* Couple photo — second block */}
-      <CouplePhotoSection />
+      {/* Welcome section with couple photo background */}
+      <section className="relative overflow-hidden py-32 md:py-44" aria-labelledby="welcome-heading">
+        {/* Background photo */}
+        <Image
+          src={config.hero_image_url}
+          alt={`${config.novios.nombre1} & ${config.novios.nombre2}`}
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-dark/60" aria-hidden="true" />
 
-      {/* Welcome section */}
-      <section className="py-24 md:py-32 bg-cream" aria-labelledby="welcome-heading">
-        <div className="max-w-xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-xl mx-auto px-6 text-center">
           <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-5">
             {t('welcome.label')}
           </p>
           <h2
             id="welcome-heading"
-            className="font-display italic text-dark font-light leading-tight mb-7"
+            className="font-display italic text-cream font-light leading-tight mb-7"
             style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)' }}
           >
             {config.texto_bienvenida}
           </h2>
           <div className="gold-divider" aria-hidden="true">◆</div>
-          <p className="font-sans text-dark-soft text-sm mt-7 leading-relaxed">
+          <p className="font-sans text-cream/80 text-sm mt-7 leading-relaxed">
             {t('welcome.description')}
           </p>
           <Link
             href="/confirmar"
-            className="inline-block mt-8 border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-10 py-3.5 transition-all duration-300 hover:bg-gold hover:text-white"
+            className="inline-block mt-8 border border-gold/80 text-cream font-sans text-xs uppercase tracking-[0.3em] px-10 py-3.5 transition-all duration-300 hover:bg-gold hover:border-gold hover:text-white"
             aria-label={t('welcome.confirmAriaLabel')}
           >
             {t('welcome.confirmCta')}
