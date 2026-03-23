@@ -16,7 +16,10 @@ function SectionDivider() {
 }
 
 export default function HomePage() {
-  const { t } = useLanguage()
+  const { t, locale } = useLanguage()
+
+  const dateLocale =
+    locale === 'de' ? 'de-DE' : locale === 'en' ? 'en-GB' : locale === 'ca' ? 'ca-ES' : 'es-ES'
 
   return (
     <main>
@@ -72,7 +75,7 @@ export default function HomePage() {
           {config.novios.nombre1} &amp; {config.novios.nombre2}
         </p>
         <p className="font-sans text-dark/25 text-xs uppercase tracking-[0.3em] mt-3">
-          {new Date(config.fecha_boda).toLocaleDateString('es-ES', {
+          {new Date(config.fecha_boda).toLocaleDateString(dateLocale, {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
