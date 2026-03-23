@@ -6,6 +6,12 @@ export interface RSVPData {
   nombres_acompanantes: string;
   dias: "viernes_sabado" | "solo_sabado";
   alergias: string;
+  ninos: "si" | "no";
+  menu_infantil: "si" | "no";
+  num_menus_infantiles: number;
+  alojamiento: "si" | "no";
+  alojamiento_dias: "viernes_sabado" | "solo_sabado" | "";
+  transporte: "si" | "no";
   timestamp?: string;
 }
 
@@ -15,6 +21,12 @@ export interface Attendee {
   nombres_acompanantes?: string;
   dias: "viernes_sabado" | "solo_sabado";
   alergias?: string;
+  ninos?: "si" | "no";
+  menu_infantil?: "si" | "no";
+  num_menus_infantiles?: number;
+  alojamiento?: "si" | "no";
+  alojamiento_dias?: "viernes_sabado" | "solo_sabado" | "";
+  transporte?: "si" | "no";
   timestamp: string;
 }
 
