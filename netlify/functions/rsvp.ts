@@ -40,7 +40,10 @@ const handler: Handler = async (event) => {
         redirect: "follow",
       });
       const data = await response.text();
-      console.log("[rsvp] Google Apps Script response status:", response.status);
+      console.log(
+        "[rsvp] Google Apps Script response status:",
+        response.status,
+      );
       console.log("[rsvp] Google Apps Script response body:", data);
       return {
         statusCode: response.status,
