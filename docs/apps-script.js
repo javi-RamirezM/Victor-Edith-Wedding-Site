@@ -7,7 +7,7 @@
  * 3. Pega este código
  * 4. Configura los permisos necesarios
  * 5. Despliega como "Web App" (Ejecutar como: Yo, Acceso: Cualquiera)
- * 6. Copia la URL del despliegue y pégala en config.json como "google_script_url"
+ * 6. Copia la URL del despliegue y configúrala como variable de entorno GOOGLE_SCRIPT_URL en Netlify
  */
 
 // ID de la hoja de cálculo de Google Sheets
@@ -49,28 +49,40 @@ function doPost(e) {
   }
 }
 
+const EXPECTED_HEADERS = [
+  'Timestamp',
+  'Nombre',
+  'Total Asistentes',
+  'Nombres Acompañantes',
+  'Días',
+  'Alergias/Notas',
+  'Niños',
+  'Menú Infantil',
+  'Nº Menús Infantiles',
+  'Alojamiento',
+  'Alojamiento Días',
+  'Transporte'
+]
+
+function ensureHeaders(sheet) {
+  const numCols = EXPECTED_HEADERS.length
+  const currentHeaders = sheet.getRange(1, 1, 1, numCols).getValues()[0]
+  const needsUpdate = EXPECTED_HEADERS.some((h, i) => currentHeaders[i] !== h)
+  if (needsUpdate) {
+    sheet.getRange(1, 1, 1, numCols).setValues([EXPECTED_HEADERS])
+    sheet.getRange(1, 1, 1, numCols).setFontWeight('bold')
+  }
+}
+
 function submitRSVP(data) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID)
   let sheet = ss.getSheetByName(SHEET_NAME)
 
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME)
-    sheet.appendRow([
-      'Timestamp',
-      'Nombre',
-      'Total Asistentes',
-      'Nombres Acompañantes',
-      'Días',
-      'Alergias/Notas',
-      'Niños',
-      'Menú Infantil',
-      'Nº Menús Infantiles',
-      'Alojamiento',
-      'Alojamiento Días',
-      'Transporte'
-    ])
-    sheet.getRange(1, 1, 1, 12).setFontWeight('bold')
   }
+
+  ensureHeaders(sheet)
 
   const alojamientoDias = data.alojamiento === 'si'
     ? (data.alojamiento_dias === 'viernes_sabado' ? 'Viernes + Sábado' : 'Solo Sábado')
