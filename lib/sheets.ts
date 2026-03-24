@@ -31,13 +31,6 @@ export interface Attendee {
 }
 
 export async function submitRSVP(data: RSVPData): Promise<boolean> {
-  if (process.env.NODE_ENV === "development") {
-    console.warn(
-      "Development mode: RSVP not saved. Set GOOGLE_SCRIPT_URL and run `netlify dev` to test the proxy.",
-    );
-    return true; // Pretend success in development
-  }
-
   try {
     const response = await fetch(PROXY_URL, {
       method: "POST",

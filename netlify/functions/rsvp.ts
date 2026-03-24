@@ -27,12 +27,24 @@ const handler: Handler = async (event) => {
 
   if (event.httpMethod === "POST") {
     try {
+      // Google Apps Script redirects POST requests. We must follow the redirect
+      // keeping the POST method and body, otherwise Node fetch converts it to GET
+      // and the body (with all form fields) is lost.
+      console.log("[rsvp] POST body received:", event.body);
       const response = await fetch(scriptUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
         body: event.body || "",
+        redirect: "follow",
       });
       const data = await response.text();
+      console.log(
+        "[rsvp] Google Apps Script response status:",
+        response.status,
+      );
+      console.log("[rsvp] Google Apps Script response body:", data);
       return {
         statusCode: response.status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
