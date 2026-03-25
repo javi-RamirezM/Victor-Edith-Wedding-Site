@@ -157,7 +157,7 @@ export default function AdminPage() {
         {/* Back to site link — top left */}
         <Link
           href="/"
-          className="fixed top-4 left-4 flex items-center gap-1.5 font-sans text-dark/35 hover:text-dark/70 transition-colors text-xs uppercase tracking-widest"
+          className="fixed top-4 left-4 flex items-center gap-1.5 font-sans text-dark/50 hover:text-dark/80 transition-colors text-xs uppercase tracking-widest"
           aria-label={t('admin.backToSite')}
         >
           <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" />
@@ -170,14 +170,14 @@ export default function AdminPage() {
               <Lock className="w-7 h-7 text-gold" aria-hidden="true" />
             </div>
             <h1 className="font-display text-dark text-3xl font-light mb-2">{t('admin.backoffice')}</h1>
-            <p className="text-dark/50 font-sans text-sm">{t('admin.privateArea')}</p>
+            <p className="text-dark/65 font-sans text-sm">{t('admin.privateArea')}</p>
           </div>
 
           <form onSubmit={handleLogin} aria-label={t('admin.login')}>
             <div className="mb-6">
               <label
                 htmlFor="password"
-                className="block text-dark/60 text-xs uppercase tracking-widest font-sans mb-2"
+                className="block text-dark/70 text-xs uppercase tracking-widest font-sans mb-2"
               >
                 {t('admin.password')}
               </label>
@@ -292,7 +292,7 @@ export default function AdminPage() {
                   <span className="font-display text-dark text-5xl font-light leading-none">
                     {value}
                   </span>
-                  <span className="font-sans text-dark/50 text-xs uppercase tracking-widest leading-tight">
+                  <span className="font-sans text-dark/70 text-xs uppercase tracking-widest leading-tight">
                     {label}
                   </span>
                 </div>
@@ -381,7 +381,7 @@ export default function AdminPage() {
               <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
             </div>
           ) : timelineData.length < 2 ? (
-            <p className="text-dark/40 font-sans text-center py-12">
+            <p className="text-dark/60 font-sans text-center py-12">
               {t('admin.notEnoughData')}
             </p>
           ) : (
@@ -511,40 +511,95 @@ export default function AdminPage() {
               <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
             </div>
           ) : attendees.length === 0 ? (
-            <p className="text-dark/40 font-sans text-center py-12">
+            <p className="text-dark/60 font-sans text-center py-12">
               {t('admin.noAttendees')}
             </p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full font-sans text-sm" aria-label={t('admin.attendeesList')}>
-                <thead>
-                  <tr className="border-b border-dark/10">
-                    <th className="text-left py-3 text-dark/50 uppercase tracking-widest text-xs font-medium">{t('admin.colName')}</th>
-                    <th className="text-left py-3 text-dark/50 uppercase tracking-widest text-xs font-medium">{t('admin.colAttendees')}</th>
-                    <th className="text-left py-3 text-dark/50 uppercase tracking-widest text-xs font-medium">{t('admin.colDays')}</th>
-                    <th className="text-left py-3 text-dark/50 uppercase tracking-widest text-xs font-medium">{t('admin.colDate')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {attendees.map((attendee, i) => (
-                    <tr key={i} className="border-b border-dark/5 hover:bg-gold/5 transition-colors">
-                      <td className="py-3 font-display text-dark text-base font-light">{attendee.nombre}</td>
-                      <td className="py-3 text-dark/70">{attendee.total_asistentes}</td>
-                      <td className="py-3 text-dark/70">
-                        {attendee.dias === 'viernes_sabado' ? t('admin.friSat') : t('admin.onlySat')}
-                      </td>
-                      <td className="py-3 text-dark/40">
-                        {new Date(attendee.timestamp).toLocaleDateString('es-ES')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-4">
+              {attendees.map((a, i) => {
+                const daysLabel = a.dias === 'viernes_sabado' ? t('admin.friSat') : t('admin.onlySat')
+                const accomLabel = a.alojamiento === 'si'
+                  ? `${t('rsvp.yes')} — ${a.alojamiento_dias === 'viernes_sabado' ? t('rsvp.accommodationFriSat') : t('rsvp.accommodationSat')}`
+                  : t('rsvp.no')
+
+                return (
+                  <div key={i} className="bg-warm-white border border-gold/20 rounded-sm p-5">
+                    {/* Card header */}
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-display italic text-dark text-xl font-light leading-tight truncate">
+                          {a.nombre}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          <span className="inline-flex items-center gap-1 bg-gold/10 text-dark font-sans text-xs px-2.5 py-0.5">
+                            {a.total_asistentes} {t('admin.persons').toLowerCase()}
+                          </span>
+                          <span className="inline-flex items-center bg-dark/8 text-dark font-sans text-xs px-2.5 py-0.5">
+                            {daysLabel}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-dark/60 text-xs font-sans shrink-0 pt-1">
+                        {new Date(a.timestamp).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </span>
+                    </div>
+
+                    {/* Detail grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 text-sm border-t border-dark/8 pt-4">
+
+                      {a.nombres_acompanantes && (
+                        <div className="sm:col-span-2">
+                          <span className="font-sans text-dark/55 text-[10px] uppercase tracking-widest block mb-0.5">{t('rsvp.companions')}</span>
+                          <span className="font-sans text-dark text-sm">{a.nombres_acompanantes}</span>
+                        </div>
+                      )}
+
+                      {a.alergias && (
+                        <div className="sm:col-span-2">
+                          <span className="font-sans text-dark/55 text-[10px] uppercase tracking-widest block mb-0.5">{t('rsvp.allergies')}</span>
+                          <span className="font-sans text-dark text-sm">{a.alergias}</span>
+                        </div>
+                      )}
+
+                      <div>
+                        <span className="font-sans text-dark/55 text-[10px] uppercase tracking-widest block mb-0.5">{t('admin.colChildren')}</span>
+                        <span className="font-sans text-dark text-sm">
+                          {a.ninos === 'si'
+                            ? `${t('rsvp.yes')}${a.menu_infantil === 'si' ? ` — ${t('admin.colChildrenMenu')}: ${a.num_menus_infantiles ?? 1}` : ''}`
+                            : t('rsvp.no')}
+                        </span>
+                      </div>
+
+                      {a.ninos === 'si' && (
+                        <div>
+                          <span className="font-sans text-dark/55 text-[10px] uppercase tracking-widest block mb-0.5">{t('admin.colHighChair')}</span>
+                          <span className="font-sans text-dark text-sm">
+                            {a.trona === 'si' ? t('rsvp.yes') : t('rsvp.no')}
+                          </span>
+                        </div>
+                      )}
+
+                      <div>
+                        <span className="font-sans text-dark/55 text-[10px] uppercase tracking-widest block mb-0.5">{t('admin.colAccommodation')}</span>
+                        <span className="font-sans text-dark text-sm">{accomLabel}</span>
+                      </div>
+
+                      <div>
+                        <span className="font-sans text-dark/55 text-[10px] uppercase tracking-widest block mb-0.5">{t('admin.colTransport')}</span>
+                        <span className="font-sans text-dark text-sm">
+                          {a.transporte === 'si' ? t('rsvp.yes') : t('rsvp.no')}
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           )}
 
-          <div className="mt-4 text-dark/40 text-sm font-sans">
-            {t('admin.total')}: {attendees.reduce((sum, a) => sum + (a.total_asistentes || 1), 0)} {t('admin.people')}
+          <div className="mt-6 text-dark/60 text-sm font-sans">
+            {t('admin.total')}: <strong className="text-dark">{attendees.reduce((sum, a) => sum + (a.total_asistentes || 1), 0)}</strong> {t('admin.people')}
           </div>
         </section>
 

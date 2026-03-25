@@ -59,6 +59,7 @@ const EXPECTED_HEADERS = [
   'Niños',
   'Menú Infantil',
   'Nº Menús Infantiles',
+  'Trona',
   'Alojamiento',
   'Alojamiento Días',
   'Transporte'
@@ -98,6 +99,7 @@ function submitRSVP(data) {
     data.ninos === 'si' ? 'Sí' : 'No',
     data.ninos === 'si' && data.menu_infantil === 'si' ? 'Sí' : 'No',
     data.ninos === 'si' && data.menu_infantil === 'si' ? (data.num_menus_infantiles || 0) : 0,
+    data.ninos === 'si' ? (data.trona === 'si' ? 'Sí' : 'No') : 'No',
     data.alojamiento === 'si' ? 'Sí' : 'No',
     alojamientoDias,
     data.transporte === 'si' ? 'Sí' : 'No'
@@ -130,9 +132,10 @@ function getAttendees() {
     ninos: row[6] === 'Sí' ? 'si' : 'no',
     menu_infantil: row[7] === 'Sí' ? 'si' : 'no',
     num_menus_infantiles: parseInt(row[8]) || 0,
-    alojamiento: row[9] === 'Sí' ? 'si' : 'no',
-    alojamiento_dias: row[10] === 'Viernes + Sábado' ? 'viernes_sabado' : (row[10] === 'Solo Sábado' ? 'solo_sabado' : ''),
-    transporte: row[11] === 'Sí' ? 'si' : 'no'
+    trona: row[9] === 'Sí' ? 'si' : 'no',
+    alojamiento: row[10] === 'Sí' ? 'si' : 'no',
+    alojamiento_dias: row[11] === 'Viernes + Sábado' ? 'viernes_sabado' : (row[11] === 'Solo Sábado' ? 'solo_sabado' : ''),
+    transporte: row[12] === 'Sí' ? 'si' : 'no'
   }))
 
   return ContentService.createTextOutput(
@@ -151,6 +154,7 @@ function test() {
     ninos: 'si',
     menu_infantil: 'si',
     num_menus_infantiles: 1,
+    trona: 'si',
     alojamiento: 'si',
     alojamiento_dias: 'viernes_sabado',
     transporte: 'no',

@@ -68,10 +68,10 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="py-14 bg-cream border-t border-dark/[0.06] text-center">
-        <p className="font-display italic text-dark/40 text-xl font-light">
+        <p className="font-display italic text-dark/65 text-xl font-light">
           {config.novios.nombre1} &amp; {config.novios.nombre2}
         </p>
-        <p className="font-sans text-dark/25 text-xs uppercase tracking-[0.3em] mt-3">
+        <p className="font-sans text-dark/50 text-xs uppercase tracking-[0.3em] mt-3">
           {new Date(config.fecha_boda).toLocaleDateString(dateLocale, {
             day: 'numeric',
             month: 'long',

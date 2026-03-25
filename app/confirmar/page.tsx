@@ -65,7 +65,7 @@ export default function ConfirmarPage() {
                   <span className="block font-sans text-dark text-xs font-semibold uppercase tracking-[0.15em]">
                     {day}
                   </span>
-                  <span className="block font-sans text-dark/60 text-xs mt-0.5">
+                  <span className="block font-sans text-dark/65 text-xs mt-0.5">
                     {desc}
                   </span>
                 </div>
@@ -80,7 +80,7 @@ export default function ConfirmarPage() {
 
       {/* Footer */}
       <footer className="py-8 text-center border-t border-dark/[0.06]">
-        <p className="font-display italic text-dark/25 text-sm font-light">
+        <p className="font-display italic text-dark/50 text-sm font-light">
           {config.novios.nombre1} &amp; {config.novios.nombre2}
         </p>
       </footer>

@@ -69,7 +69,7 @@ export default function GuestList() {
                 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}>
                 {value}
               </span>
-              <span className="block font-sans text-cream/40 uppercase tracking-[0.3em] text-[10px] mt-3">
+              <span className="block font-sans text-cream/60 uppercase tracking-[0.3em] text-[10px] mt-3">
                 {label}
               </span>
             </div>
@@ -84,7 +84,7 @@ export default function GuestList() {
         ) : attendees.length === 0 ? (
           <div className="text-center py-12 animate-on-scroll">
             <Heart className="w-8 h-8 text-gold/20 mx-auto mb-4" aria-hidden="true" />
-            <p className="font-sans text-cream/30 text-sm">
+            <p className="font-sans text-cream/55 text-sm">
               {t('guestlist.beFirst')}
             </p>
           </div>
@@ -103,10 +103,10 @@ export default function GuestList() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-sans text-cream/30 text-xs uppercase tracking-widest hidden sm:block">
+                  <span className="font-sans text-cream/55 text-xs uppercase tracking-widest hidden sm:block">
                     {attendee.dias === 'viernes_sabado' ? t('guestlist.friSat') : t('guestlist.onlySat')}
                   </span>
-                  <span className="flex items-center gap-1 font-sans text-gold/60 text-xs">
+                  <span className="flex items-center gap-1 font-sans text-gold/80 text-xs">
                     <Users className="w-3 h-3" aria-hidden="true" />
                     {attendee.total_asistentes}
                   </span>
@@ -118,7 +118,7 @@ export default function GuestList() {
 
         {/* CTA */}
         <div className="text-center mt-16 animate-on-scroll">
-          <p className="font-sans text-cream/30 text-sm mb-6">
+          <p className="font-sans text-cream/60 text-sm mb-6">
             {t('guestlist.stillNotConfirmed')}
           </p>
           <Link
