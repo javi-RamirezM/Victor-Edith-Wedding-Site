@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --cream: #FAF7F2;
-  --warm-white: #FFFDF9;
-  --gold: #C9A96E;
-  --gold-light: #E8D5B0;
-  --sage: #8B9E77;
-  --dark: #1C1C1C;
-  --dark-soft: #3D3D3D;
+  --cream: #faf7f2;
+  --warm-white: #fffdf9;
+  --gold: #c9a96e;
+  --gold-contrast: #b58f4f;
+  --gold-light: #e8d5b0;
+  --sage: #8b9e77;
+  --dark: #1c1c1c;
+  --dark-soft: #3d3d3d;
 
-  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
-  --font-dm-sans: 'DM Sans', system-ui, sans-serif;
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --font-dm-sans: "DM Sans", system-ui, sans-serif;
 }
 
 * {
@@ -42,7 +43,9 @@ body {
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.75s ease-out, transform 0.75s ease-out;
+  transition:
+    opacity 0.75s ease-out,
+    transform 0.75s ease-out;
 }
 
 .animate-on-scroll.visible {
@@ -73,7 +76,7 @@ body {
 
 .gold-divider::before,
 .gold-divider::after {
-  content: '';
+  content: "";
   display: block;
   width: 60px;
   height: 1px;
@@ -95,7 +98,7 @@ body {
 
 .section-divider::before,
 .section-divider::after {
-  content: '';
+  content: "";
   flex: 1;
   max-width: 120px;
   height: 1px;
@@ -122,3 +125,10 @@ body {
   border-radius: 3px;
 }
 
+/* Gold text contrast helper: use alongside `text-gold` to improve legibility */
+.text-gold-contrast {
+  color: var(--gold-contrast);
+  font-weight: 500;
+  text-shadow: 0 0.6px 0 rgba(0, 0, 0, 0.12);
+  letter-spacing: 0.02em;
+}

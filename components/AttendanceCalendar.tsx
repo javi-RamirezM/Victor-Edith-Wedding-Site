@@ -88,7 +88,7 @@ export default function AttendanceCalendar() {
               style={{ fontSize: 'clamp(2.2rem, 6vw, 3.5rem)' }}>
               {value}
             </span>
-            <span className="block font-sans text-dark/40 uppercase tracking-[0.25em] text-[10px] mt-2">
+            <span className="block font-sans text-dark/60 uppercase tracking-[0.25em] text-[10px] mt-2">
               {label}
             </span>
           </div>
@@ -109,18 +109,18 @@ export default function AttendanceCalendar() {
                 {date.toLocaleDateString(dateLocale, { weekday: 'long' })}
               </h2>
             </div>
-            <p className="font-sans text-dark/40 text-xs mb-5 pl-[18px]">
+            <p className="font-sans text-dark/60 text-xs mb-5 pl-[18px]">
               {date.toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
 
             {/* Divider */}
             <div className="border-t border-dark/10 pt-5">
-              <p className="font-sans text-dark/35 uppercase tracking-[0.25em] text-[10px] mb-4">
+              <p className="font-sans text-dark/55 uppercase tracking-[0.25em] text-[10px] mb-4">
                 {totalPersons} {totalPersons === 1 ? t('attendance.confirmedSingular') : t('attendance.confirmedPlural')}
               </p>
 
               {list.length === 0 ? (
-                <p className="font-sans text-dark/25 text-sm italic">
+                <p className="font-sans text-dark/50 text-sm italic">
                   {t('attendance.noone')}
                 </p>
               ) : (
@@ -130,7 +130,7 @@ export default function AttendanceCalendar() {
                       <span className="font-display italic text-dark text-base font-light">
                         {attendee.nombre}
                       </span>
-                      <span className="font-sans text-dark/30 text-xs flex items-center gap-1">
+                      <span className="font-sans text-dark/55 text-xs flex items-center gap-1">
                         <Users className="w-3 h-3" aria-hidden="true" />
                         {attendee.total_asistentes}
                       </span>
