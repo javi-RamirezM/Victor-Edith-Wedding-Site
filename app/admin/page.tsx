@@ -61,6 +61,7 @@ export default function AdminPage() {
       t('admin.colChildren'),
       t('admin.colChildrenMenu'),
       t('admin.colChildrenMenuCount'),
+      t('admin.colHighChair'),
       t('admin.colAccommodation'),
       t('admin.colAccommodationDays'),
       t('admin.colTransport'),
@@ -75,6 +76,7 @@ export default function AdminPage() {
       a.ninos === 'si' ? t('rsvp.yes') : t('rsvp.no'),
       a.menu_infantil === 'si' ? t('rsvp.yes') : t('rsvp.no'),
       a.ninos === 'si' && a.menu_infantil === 'si' ? (a.num_menus_infantiles ?? 0) : 0,
+      a.ninos === 'si' ? (a.trona === 'si' ? t('rsvp.yes') : t('rsvp.no')) : t('rsvp.no'),
       a.alojamiento === 'si' ? t('rsvp.yes') : t('rsvp.no'),
       a.alojamiento === 'si'
         ? (a.alojamiento_dias === 'viernes_sabado' ? t('rsvp.accommodationFriSat') : t('rsvp.accommodationSat'))
@@ -105,9 +107,10 @@ export default function AdminPage() {
       .reduce((s, a) => s + (a.total_asistentes || 1), 0)
     const personasSabado = totalPersonas
     const menuInfantiles = attendees.reduce((s, a) => s + (a.ninos === 'si' && a.menu_infantil === 'si' ? (a.num_menus_infantiles || 0) : 0), 0)
+    const tronas = attendees.filter((a) => a.ninos === 'si' && a.trona === 'si').length
     const buscanAlojamiento = attendees.filter((a) => a.alojamiento === 'si').length
     const sinTransporte = attendees.filter((a) => a.transporte === 'no').length
-    return { totalRespuestas, totalPersonas, personasViernes, personasSabado, menuInfantiles, buscanAlojamiento, sinTransporte }
+    return { totalRespuestas, totalPersonas, personasViernes, personasSabado, menuInfantiles, tronas, buscanAlojamiento, sinTransporte }
   }, [attendees])
 
   const slotBarData = useMemo(() => {
@@ -278,6 +281,7 @@ export default function AdminPage() {
                 { label: t('admin.peopleFriday'), value: stats.personasViernes },
                 { label: t('admin.peopleSaturday'), value: stats.personasSabado },
                 { label: t('admin.childrenMenus'), value: stats.menuInfantiles },
+                { label: t('admin.highChairs'), value: stats.tronas },
                 { label: t('admin.needAccommodation'), value: stats.buscanAlojamiento },
                 { label: t('admin.noTransport'), value: stats.sinTransporte },
               ].map(({ label, value }) => (

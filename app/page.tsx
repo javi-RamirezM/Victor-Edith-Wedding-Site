@@ -48,12 +48,9 @@ export default function HomePage() {
             className="font-display italic text-cream font-light leading-tight mb-7"
             style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)' }}
           >
-            {config.texto_bienvenida}
+            {t('welcome.mainTitle')}
           </h2>
           <div className="gold-divider" aria-hidden="true">◆</div>
-          <p className="font-sans text-cream/80 text-sm mt-7 leading-relaxed">
-            {t('welcome.description')}
-          </p>
           <Link
             href="/confirmar"
             className="inline-block mt-8 border border-gold/80 text-cream font-sans text-xs uppercase tracking-[0.3em] px-10 py-3.5 transition-all duration-300 hover:bg-gold hover:border-gold hover:text-white"

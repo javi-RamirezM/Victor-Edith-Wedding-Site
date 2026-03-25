@@ -9,6 +9,7 @@ export interface RSVPData {
   ninos: "si" | "no";
   menu_infantil: "si" | "no";
   num_menus_infantiles: number;
+  trona: "si" | "no";
   alojamiento: "si" | "no";
   alojamiento_dias: "viernes_sabado" | "solo_sabado" | "";
   transporte: "si" | "no";
@@ -24,6 +25,7 @@ export interface Attendee {
   ninos?: "si" | "no";
   menu_infantil?: "si" | "no";
   num_menus_infantiles?: number;
+  trona?: "si" | "no";
   alojamiento?: "si" | "no";
   alojamiento_dias?: "viernes_sabado" | "solo_sabado" | "";
   transporte?: "si" | "no";
