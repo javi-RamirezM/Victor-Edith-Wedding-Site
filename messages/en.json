@@ -12,6 +12,24 @@
     "min": "Min",
     "seg": "Sec"
   },
+  "weekend": {
+    "label": "The weekend",
+    "title": "The weekend programme",
+    "subtitle": "A special weekend at the Masía. Come for as long as you can — the more the merrier.",
+    "confirmCta": "Confirm Attendance",
+    "friday": "Friday",
+    "fridayDate": "Afternoon — Evening",
+    "fridayTitle": "Pre-wedding at the Masía",
+    "fridayDesc": "Arrival, welcome and quality time together before the big day.",
+    "saturday": "Saturday",
+    "saturdayDate": "All day",
+    "saturdayTitle": "Ceremony & Celebration",
+    "saturdayDesc": "The wedding. Ceremony, banquet and dancing until we can't anymore.",
+    "sunday": "Sunday",
+    "sundayDate": "Morning",
+    "sundayTitle": "Breakfast / Brunch",
+    "sundayDesc": "We close the weekend the right way — unhurried, with coffee and great memories."
+  },
   "welcome": {
     "label": "Welcome",
     "mainTitle": "We are getting married and we want to celebrate with you",

@@ -24,7 +24,7 @@ export default function LanguageSelector() {
             onClick={() => setLocale(code)}
             className={`font-sans text-[10px] uppercase tracking-[0.15em] px-1.5 py-0.5 transition-colors duration-200 ${
               locale === code
-                ? 'text-gold font-medium'
+                ? 'text-gold text-gold-contrast font-medium'
                 : 'text-dark/35 hover:text-dark/70'
             }`}
             aria-label={`Switch language to ${label}`}

@@ -40,7 +40,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-dark/60" aria-hidden="true" />
 
         <div className="relative z-10 max-w-xl mx-auto px-6 text-center">
-          <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-5">
+          <p className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs mb-5">
             {t('welcome.label')}
           </p>
           <h2

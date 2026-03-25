@@ -12,6 +12,24 @@
     "min": "Min",
     "seg": "Seg"
   },
+  "weekend": {
+    "label": "El cap de setmana",
+    "title": "El programa del cap de setmana",
+    "subtitle": "Un cap de setmana especial a la Masia. Vine el temps que puguis — com més, millor.",
+    "confirmCta": "Confirmar Assistència",
+    "friday": "Divendres",
+    "fridayDate": "Tarda — Nit",
+    "fridayTitle": "Precasament a la Masia",
+    "fridayDesc": "Arribada, benvinguda i temps de qualitat per gaudir junts abans del gran dia.",
+    "saturday": "Dissabte",
+    "saturdayDate": "Tot el dia",
+    "saturdayTitle": "Cerimònia i Celebració",
+    "saturdayDesc": "El casament. Cerimònia, banquet i ball fins que el cos aguanti.",
+    "sunday": "Diumenge",
+    "sundayDate": "Matí",
+    "sundayTitle": "Esmorzar / Brunch",
+    "sundayDesc": "Tanquem el cap de setmana com es mereix, amb calma, cafè i bons records."
+  },
   "welcome": {
     "label": "Benvinguts",
     "mainTitle": "Ens casem i volem celebrar-ho amb tu",

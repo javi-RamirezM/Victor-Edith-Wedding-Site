@@ -30,7 +30,7 @@ export default function AsistentesPage() {
 
       {/* Page header */}
       <div className="max-w-4xl mx-auto px-6 pt-14 pb-4 text-center">
-        <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
+        <p className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs mb-4">
           {t('asistentes.label')}
         </p>
         <h1

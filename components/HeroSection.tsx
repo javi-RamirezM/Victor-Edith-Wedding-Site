@@ -79,7 +79,7 @@ export default function HeroSection() {
 
         {/* Eyebrow label */}
         <p
-          className="font-sans text-gold uppercase tracking-[0.4em] text-xs font-light mb-10 animate-fade-in opacity-0"
+          className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs font-light mb-10 animate-fade-in opacity-0"
           style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
         >
           {t('hero.invitation')}
@@ -105,7 +105,7 @@ export default function HeroSection() {
             {config.novios.nombre1}
           </h1>
           <p
-            className="font-sans text-gold uppercase tracking-[0.5em] text-xs animate-fade-in opacity-0"
+            className="font-sans text-gold text-gold-contrast uppercase tracking-[0.5em] text-xs animate-fade-in opacity-0"
             style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
             aria-hidden="true"
           >
@@ -152,7 +152,7 @@ export default function HeroSection() {
                     style={{ fontSize: 'clamp(2.2rem, 6vw, 3.5rem)' }}>
                     {String(value).padStart(2, '0')}
                   </span>
-                  <span className="block font-sans text-gold uppercase tracking-[0.25em] text-[10px] mt-2">
+                  <span className="block font-sans text-gold text-gold-contrast uppercase tracking-[0.25em] text-[10px] mt-2">
                     {label}
                   </span>
                 </div>

@@ -8,6 +8,7 @@
   --cream: #FAF7F2;
   --warm-white: #FFFDF9;
   --gold: #C9A96E;
+  --gold-contrast: #B58F4F;
   --gold-light: #E8D5B0;
   --sage: #8B9E77;
   --dark: #1C1C1C;
@@ -120,5 +121,13 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--gold-light);
   border-radius: 3px;
+}
+
+/* Gold text contrast helper: use alongside `text-gold` to improve legibility */
+.text-gold-contrast {
+  color: var(--gold-contrast);
+  font-weight: 500;
+  text-shadow: 0 0.6px 0 rgba(0,0,0,0.12);
+  letter-spacing: 0.02em;
 }
 

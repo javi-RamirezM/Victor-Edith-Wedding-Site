@@ -1,4 +1,5 @@
-const PROXY_URL = "/.netlify/functions/rsvp";
+const FUNCTIONS_BASE = process.env.NEXT_PUBLIC_FUNCTIONS_BASE ?? "";
+const PROXY_URL = `${FUNCTIONS_BASE}/.netlify/functions/rsvp`;
 
 export interface RSVPData {
   nombre: string;

@@ -129,7 +129,7 @@ export default function RSVPForm() {
     return (
       <div className="flex items-center justify-center px-6 py-20">
         <div className="w-full max-w-lg bg-white shadow-xl px-10 py-14 text-center animate-fade-in-up">
-          <CheckCircle className="w-10 h-10 text-gold mx-auto mb-6" aria-hidden="true" />
+          <CheckCircle className="w-10 h-10 text-gold text-gold-contrast mx-auto mb-6" aria-hidden="true" />
           <h2 className="font-display italic text-dark font-light mb-3" style={{ fontSize: '2.2rem' }}>
             {t('rsvp.successTitle')}
           </h2>
@@ -140,7 +140,7 @@ export default function RSVPForm() {
           <p className="font-sans text-dark-soft text-sm mb-10">
             {t('rsvp.successMessage')}
           </p>
-          <Heart className="w-5 h-5 text-gold mx-auto mb-8" aria-hidden="true" />
+          <Heart className="w-5 h-5 text-gold text-gold-contrast mx-auto mb-8" aria-hidden="true" />
           <Link
             href="/"
             className="inline-block border border-gold text-dark font-sans text-xs uppercase tracking-[0.3em] px-8 py-3 transition-all duration-300 hover:bg-gold hover:text-white"
@@ -186,7 +186,7 @@ export default function RSVPForm() {
           {/* Nombre */}
           <div>
             <label htmlFor="nombre" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
-              {t('rsvp.fullName')} <span className="text-gold" aria-hidden="true">*</span>
+              {t('rsvp.fullName')} <span className="text-gold text-gold-contrast" aria-hidden="true">*</span>
             </label>
             <input
               id="nombre"
@@ -213,7 +213,7 @@ export default function RSVPForm() {
           {/* Total asistentes */}
           <div>
             <label htmlFor="total_asistentes" className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3">
-              {t('rsvp.howMany')} <span className="text-gold" aria-hidden="true">*</span>
+              {t('rsvp.howMany')} <span className="text-gold text-gold-contrast" aria-hidden="true">*</span>
             </label>
             <input
               id="total_asistentes"
@@ -417,7 +417,7 @@ export default function RSVPForm() {
           {/* Opción de asistencia — 4 combined options */}
           <fieldset>
             <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
-              {t('rsvp.attendingOption')} <span className="text-gold" aria-hidden="true">*</span>
+              {t('rsvp.attendingOption')} <span className="text-gold text-gold-contrast" aria-hidden="true">*</span>
             </legend>
             <div className="space-y-3">
               {attendanceOptions.map(({ value, title, subtitle }) => {

@@ -45,7 +45,7 @@ export default function GuestList() {
 
         {/* Section header */}
         <div className="text-center mb-16 animate-on-scroll">
-          <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
+          <p className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs mb-4">
             {t('guestlist.confirmed')}
           </p>
           <h2
@@ -65,7 +65,7 @@ export default function GuestList() {
             { value: totalGuests, label: t('guestlist.people') },
           ].map(({ value, label }) => (
             <div key={label} className="bg-dark text-center py-8 px-4">
-              <span className="block font-display italic text-gold font-light leading-none"
+              <span className="block font-display italic text-gold text-gold-contrast font-light leading-none"
                 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}>
                 {value}
               </span>
@@ -117,13 +117,13 @@ export default function GuestList() {
         )}
 
         {/* CTA */}
-        <div className="text-center mt-16 animate-on-scroll">
+            <div className="text-center mt-16 animate-on-scroll">
           <p className="font-sans text-cream/60 text-sm mb-6">
             {t('guestlist.stillNotConfirmed')}
           </p>
           <Link
             href="/confirmar"
-            className="inline-block border border-gold text-gold font-sans text-xs uppercase tracking-[0.3em] px-10 py-4 transition-all duration-300 hover:bg-gold hover:text-white"
+            className="inline-block border border-gold text-gold text-gold-contrast font-sans text-xs uppercase tracking-[0.3em] px-10 py-4 transition-all duration-300 hover:bg-gold hover:text-white"
             aria-label={t('guestlist.confirmCtaAria')}
           >
             {t('guestlist.confirmCta')}

@@ -166,8 +166,8 @@ export default function AdminPage() {
 
         <div className="w-full max-w-sm">
           <div className="text-center mb-10">
-            <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
-              <Lock className="w-7 h-7 text-gold" aria-hidden="true" />
+              <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
+              <Lock className="w-7 h-7 text-gold text-gold-contrast" aria-hidden="true" />
             </div>
             <h1 className="font-display text-dark text-3xl font-light mb-2">{t('admin.backoffice')}</h1>
             <p className="text-dark/65 font-sans text-sm">{t('admin.privateArea')}</p>
@@ -261,7 +261,7 @@ export default function AdminPage() {
         {/* ── Chart 2: Stat cards ── */}
         <section aria-labelledby="stats-heading">
           <div className="mb-8">
-            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+            <p className="text-gold text-gold-contrast uppercase tracking-[0.3em] text-xs font-sans mb-1">
               {t('admin.stats')}
             </p>
             <h2 id="stats-heading" className="font-display text-dark text-3xl font-light">
@@ -304,7 +304,7 @@ export default function AdminPage() {
         {/* ── Chart 1: Bar chart — asistentes por slot ── */}
         <section aria-labelledby="bar-chart-heading">
           <div className="mb-8">
-            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+            <p className="text-gold text-gold-contrast uppercase tracking-[0.3em] text-xs font-sans mb-1">
               {t('admin.distribution')}
             </p>
             <h2 id="bar-chart-heading" className="font-display text-dark text-3xl font-light">
@@ -368,7 +368,7 @@ export default function AdminPage() {
         {/* ── Chart 3: Timeline — confirmaciones acumuladas ── */}
         <section aria-labelledby="timeline-heading">
           <div className="mb-8">
-            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+            <p className="text-gold text-gold-contrast uppercase tracking-[0.3em] text-xs font-sans mb-1">
               {t('admin.history')}
             </p>
             <h2 id="timeline-heading" className="font-display text-dark text-3xl font-light">
@@ -430,7 +430,7 @@ export default function AdminPage() {
         {/* ── Chart 4: Logistics bar chart ── */}
         <section aria-labelledby="logistics-heading">
           <div className="mb-8">
-            <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+            <p className="text-gold text-gold-contrast uppercase tracking-[0.3em] text-xs font-sans mb-1">
               {t('admin.logistics')}
             </p>
             <h2 id="logistics-heading" className="font-display text-dark text-3xl font-light">
@@ -489,7 +489,7 @@ export default function AdminPage() {
         <section aria-labelledby="attendees-section">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <p className="text-gold uppercase tracking-[0.3em] text-xs font-sans mb-1">
+              <p className="text-gold text-gold-contrast uppercase tracking-[0.3em] text-xs font-sans mb-1">
                 {t('admin.management')}
               </p>
               <h2 id="attendees-section" className="font-display text-dark text-3xl font-light">
@@ -498,7 +498,7 @@ export default function AdminPage() {
             </div>
             <button
               onClick={exportCSV}
-              className="flex items-center gap-2 border border-gold text-gold px-4 py-2 text-sm uppercase tracking-widest font-sans hover:bg-gold hover:text-dark transition-all duration-300"
+              className="flex items-center gap-2 border border-gold text-gold text-gold-contrast px-4 py-2 text-sm uppercase tracking-widest font-sans hover:bg-gold hover:text-dark transition-all duration-300"
               aria-label={t('admin.exportCSVAria')}
             >
               <Download className="w-4 h-4" aria-hidden="true" />

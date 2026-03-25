@@ -12,6 +12,24 @@
     "min": "Min",
     "seg": "Seg"
   },
+  "weekend": {
+    "label": "El fin de semana",
+    "title": "El programa del fin de semana",
+    "subtitle": "Un fin de semana especial en la Masía. Ven el tiempo que puedas — cuanto más, mejor.",
+    "confirmCta": "Confirmar Asistencia",
+    "friday": "Viernes",
+    "fridayDate": "Tarde — Noche",
+    "fridayTitle": "Preboda en la Masía",
+    "fridayDesc": "Llegada, bienvenida y tiempo de calidad para disfrutar juntos antes del gran día.",
+    "saturday": "Sábado",
+    "saturdayDate": "Todo el día",
+    "saturdayTitle": "Ceremonia y Celebración",
+    "saturdayDesc": "La boda. Ceremonia, banquete y baile hasta que aguante el cuerpo.",
+    "sunday": "Domingo",
+    "sundayDate": "Mañana",
+    "sundayTitle": "Desayuno / Brunch",
+    "sundayDesc": "Cerramos el fin de semana como se merece, con calma, café y buenos recuerdos."
+  },
   "welcome": {
     "label": "Bienvenidos",
     "mainTitle": "Nos casamos y queremos celebrarlo contigo",
@@ -51,7 +69,7 @@
     "childrenMenuCount": "¿Cuántos menús infantiles?",
     "highChair": "¿Necesitáis trona?",
     "allergies": "Alergias o notas especiales",
-    "allergiesPlaceholder": "Opcional: indica el nombre de la persona y su alergia o necesidad especial",
+    "allergiesPlaceholder": "Opcional: indica el nombre de la persona, alergia, menú vegetariano/vegano o necesidad especial",
     "attendingOption": "¿Cómo vais a asistir?",
     "optionSatNoAccom": "Boda el sábado — sin alojamiento",
     "optionSatNoAccomSub": "Solo sábado, ceremonia y banquete",

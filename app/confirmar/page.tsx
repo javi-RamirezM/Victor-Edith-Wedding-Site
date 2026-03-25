@@ -30,7 +30,7 @@ export default function ConfirmarPage() {
 
       {/* Page header */}
       <div className="max-w-lg mx-auto px-6 pt-14 pb-6 text-center">
-        <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
+        <p className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs mb-4">
           {t('rsvp.label')}
         </p>
         <h1
