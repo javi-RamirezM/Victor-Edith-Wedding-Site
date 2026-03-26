@@ -4,13 +4,35 @@ import { config } from '@/lib/config'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import LanguageSelector from '@/components/LanguageSelector'
 
+const siteName = `Boda de ${config.novios.nombre1} & ${config.novios.nombre2}`
+
 export const metadata: Metadata = {
-  title: `Boda de ${config.novios.nombre1} & ${config.novios.nombre2}`,
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3000'
+  ),
+  title: siteName,
   description: config.texto_bienvenida,
   openGraph: {
-    title: `Boda de ${config.novios.nombre1} & ${config.novios.nombre2}`,
+    title: siteName,
     description: config.texto_bienvenida,
     type: 'website',
+    siteName,
+    images: [
+      {
+        url: '/images/pareja.jpeg',
+        alt: siteName,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteName,
+    description: config.texto_bienvenida,
+    images: ['/images/pareja.jpeg'],
   },
 }
 
