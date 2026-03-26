@@ -115,11 +115,11 @@ export default function VenueMap() {
               </div>
             </div>
 
-            <blockquote className="border-l border-gold pl-5">
-              <p className="font-display italic text-dark/60 text-base font-light leading-relaxed">
-                &ldquo;{t("venue.descripcion")}&rdquo;
+            <div className="border-l border-gold pl-5">
+              <p className="font-sans text-dark-soft text-sm leading-relaxed">
+                {t("venue.accommodationInfo")}
               </p>
-            </blockquote>
+            </div>
           </div>
         </div>
       </div>
