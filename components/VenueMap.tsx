@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { config } from "@/lib/config";
 import { MapPin, Navigation } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import WeekendTimeline from "@/components/WeekendTimeline";
+import WeekendTimeline from "./WeekendTimeline";
 
 const LeafletMap = dynamic(() => import("./LeafletMap"), { ssr: false });
 
@@ -34,20 +34,14 @@ export default function VenueMap() {
       aria-labelledby="venue-heading"
     >
       <div className="max-w-5xl mx-auto px-6">
-        {/* Weekend timeline — same section */}
+        {/* Weekend timeline */}
         <div className="mb-16">
           <WeekendTimeline />
         </div>
 
-        {/* Divider between timeline and venue */}
-        <div
-          className="w-full h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent mb-16"
-          aria-hidden="true"
-        />
-
         {/* Section header */}
         <div className="text-center mb-16 animate-on-scroll">
-          <p className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs mb-4">
+          <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
             {t("venue.label")}
           </p>
           <h2
@@ -85,10 +79,7 @@ export default function VenueMap() {
           <div className="animate-on-scroll order-1 md:order-2 space-y-10 pt-2">
             <div className="flex items-start gap-5">
               <div className="flex-shrink-0 w-9 h-9 border border-gold/30 flex items-center justify-center mt-0.5">
-                <MapPin
-                  className="w-4 h-4 text-gold text-gold-contrast"
-                  aria-hidden="true"
-                />
+                <MapPin className="w-4 h-4 text-gold" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-sans text-dark uppercase tracking-[0.2em] text-xs mb-2">
@@ -102,10 +93,7 @@ export default function VenueMap() {
 
             <div className="flex items-start gap-5">
               <div className="flex-shrink-0 w-9 h-9 border border-gold/30 flex items-center justify-center mt-0.5">
-                <Navigation
-                  className="w-4 h-4 text-gold text-gold-contrast"
-                  aria-hidden="true"
-                />
+                <Navigation className="w-4 h-4 text-gold" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-sans text-dark uppercase tracking-[0.2em] text-xs mb-2">
@@ -127,11 +115,11 @@ export default function VenueMap() {
               </div>
             </div>
 
-            <div className="border-l border-gold pl-5">
-              <p className="font-sans text-dark/70 text-sm font-light leading-relaxed">
-                {t("venue.accommodationInfo")}
+            <blockquote className="border-l border-gold pl-5">
+              <p className="font-display italic text-dark/60 text-base font-light leading-relaxed">
+                &ldquo;{t("venue.descripcion")}&rdquo;
               </p>
-            </div>
+            </blockquote>
           </div>
         </div>
       </div>

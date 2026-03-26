@@ -7,7 +7,6 @@ interface DayCard {
   dayKey: string;
   dateKey: string;
   titleKey: string;
-  descKey: string;
   highlight?: boolean;
   icon: string;
 }
@@ -17,14 +16,12 @@ const DAYS: DayCard[] = [
     dayKey: "weekend.friday",
     dateKey: "weekend.fridayDate",
     titleKey: "weekend.fridayTitle",
-    descKey: "weekend.fridayDesc",
     icon: "1",
   },
   {
     dayKey: "weekend.saturday",
     dateKey: "weekend.saturdayDate",
     titleKey: "weekend.saturdayTitle",
-    descKey: "weekend.saturdayDesc",
     highlight: true,
     icon: "2",
   },
@@ -32,7 +29,6 @@ const DAYS: DayCard[] = [
     dayKey: "weekend.sunday",
     dateKey: "weekend.sundayDate",
     titleKey: "weekend.sundayTitle",
-    descKey: "weekend.sundayDesc",
     icon: "3",
   },
 ];
@@ -57,7 +53,7 @@ export default function WeekendTimeline() {
 
   return (
     <div ref={sectionRef} aria-labelledby="weekend-heading" role="region">
-      {/* Divider */}
+      {/* Divider top */}
       <div
         className="w-full h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent mb-16 animate-on-scroll"
         aria-hidden="true"
@@ -65,7 +61,7 @@ export default function WeekendTimeline() {
 
       {/* Header */}
       <div className="text-center mb-12 animate-on-scroll">
-        <p className="font-sans text-gold text-gold-contrast uppercase tracking-[0.4em] text-xs mb-4">
+        <p className="font-sans text-gold uppercase tracking-[0.4em] text-xs mb-4">
           {t("weekend.label")}
         </p>
         <h2
@@ -98,19 +94,20 @@ export default function WeekendTimeline() {
               className="animate-on-scroll flex flex-col items-center text-center"
               style={{ transitionDelay: `${i * 0.12}s` }}
             >
-              {/* Connector dot + vertical line (mobile) */}
+              {/* Circle */}
               <div className="flex flex-col items-center">
-                {/* Circle */}
                 <div
                   className={`relative z-10 flex items-center justify-center w-[52px] h-[52px] rounded-full border-2 transition-all ${
                     highlight
                       ? "border-gold bg-gold/10"
-                      : "border-gold/40 bg-cream"
+                      : "border-gold/40 bg-stone-200"
                   }`}
                   aria-hidden="true"
                 >
                   <span
-                    className={`font-display italic font-light select-none text-lg leading-none ${highlight ? "text-gold" : "text-dark/50"}`}
+                    className={`font-display italic font-light select-none text-lg leading-none ${
+                      highlight ? "text-gold" : "text-dark/60"
+                    }`}
                   >
                     {icon}
                   </span>
@@ -130,12 +127,12 @@ export default function WeekendTimeline() {
                 className={`mt-5 w-full px-6 py-7 ${
                   highlight
                     ? "bg-dark text-cream"
-                    : "bg-warm-white border border-dark/[0.07]"
+                    : "bg-stone-200 border border-dark/[0.10]"
                 }`}
               >
                 <span
                   className={`block font-sans text-[10px] uppercase tracking-[0.3em] mb-1 ${
-                    highlight ? "text-gold-light" : "text-dark/45"
+                    highlight ? "text-gold-light" : "text-dark/55"
                   }`}
                 >
                   {t(dateKey)}
@@ -150,7 +147,7 @@ export default function WeekendTimeline() {
                 </span>
                 <div
                   className={`w-8 h-px mx-auto my-3 ${
-                    highlight ? "bg-gold/60" : "bg-gold/30"
+                    highlight ? "bg-gold/60" : "bg-gold/40"
                   }`}
                   aria-hidden="true"
                 />
