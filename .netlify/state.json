@@ -1,0 +1,20 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Barcelona",
+			"country": {
+				"code": "ES",
+				"name": "Spain"
+			},
+			"subdivision": {
+				"code": "CT",
+				"name": "Catalonia"
+			},
+			"timezone": "Europe/Madrid",
+			"latitude": 41.4162,
+			"longitude": 2.1543,
+			"postalCode": "08024"
+		},
+		"timestamp": 1774475409671
+	}
+}
