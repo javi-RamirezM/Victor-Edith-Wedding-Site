@@ -531,17 +531,15 @@ export default function RSVPForm() {
                 );
               })}
             </div>
-            {attendanceOption !== "no" && (
-              <div
-                className="mt-4 flex gap-3 border border-gold/50 bg-gold/[0.08] px-4 py-3"
-                role="note"
-              >
-                <span className="mt-0.5 text-gold text-gold-contrast text-base leading-none" aria-hidden="true">✦</span>
-                <p className="font-sans text-dark/80 text-xs leading-relaxed">
-                  {t("rsvp.accommodationAlert")}
-                </p>
-              </div>
-            )}
+            <div
+              className="mt-4 flex gap-3 border border-gold/50 bg-gold/[0.08] px-4 py-3"
+              role="note"
+            >
+              <span className="mt-0.5 text-gold text-gold-contrast text-base leading-none" aria-hidden="true">✦</span>
+              <p className="font-sans text-dark/80 text-xs leading-relaxed">
+                {t("rsvp.accommodationAlert")}
+              </p>
+            </div>
           </fieldset>
 
           {/* Transporte */}
