@@ -90,6 +90,12 @@ export default function ConfirmarPage() {
             ))}
           </ol>
         </div>
+        {/* Friday note */}
+        <div className="mt-4 border-l-2 border-gold/50 pl-4">
+          <p className="font-sans text-dark/65 text-xs leading-relaxed italic">
+            {t("venue.fridayNote")}
+          </p>
+        </div>
       </div>
 
       {/* RSVP Card Form */}

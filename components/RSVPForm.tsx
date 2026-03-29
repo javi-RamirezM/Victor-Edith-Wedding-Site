@@ -8,31 +8,21 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 type FormStep = "form" | "submitting" | "success" | "error";
 
-type AttendanceOption =
-  | "sabado_sin_alojamiento"
-  | "sabado_con_alojamiento"
-  | "viernes_sabado_sin_alojamiento"
-  | "viernes_sabado_con_alojamiento";
+type AttendanceOption = "no" | "si_sabado" | "si_viernes_sabado";
 
 function deriveFromOption(
   option: AttendanceOption,
 ): Pick<RSVPData, "dias" | "alojamiento" | "alojamiento_dias"> {
   switch (option) {
-    case "sabado_sin_alojamiento":
+    case "no":
       return { dias: "solo_sabado", alojamiento: "no", alojamiento_dias: "" };
-    case "sabado_con_alojamiento":
+    case "si_sabado":
       return {
         dias: "solo_sabado",
         alojamiento: "si",
         alojamiento_dias: "solo_sabado",
       };
-    case "viernes_sabado_sin_alojamiento":
-      return {
-        dias: "viernes_sabado",
-        alojamiento: "no",
-        alojamiento_dias: "",
-      };
-    case "viernes_sabado_con_alojamiento":
+    case "si_viernes_sabado":
       return {
         dias: "viernes_sabado",
         alojamiento: "si",
@@ -48,13 +38,13 @@ export default function RSVPForm() {
     {},
   );
   const [attendanceOption, setAttendanceOption] = useState<AttendanceOption>(
-    "viernes_sabado_sin_alojamiento",
+    "no",
   );
   const [formData, setFormData] = useState<RSVPData>({
     nombre: "",
     total_asistentes: 1,
     nombres_acompanantes: "",
-    dias: "viernes_sabado",
+    dias: "solo_sabado",
     alergias: "",
     ninos: "no",
     menu_infantil: "no",
@@ -63,6 +53,7 @@ export default function RSVPForm() {
     alojamiento: "no",
     alojamiento_dias: "",
     transporte: "si",
+    extra: "",
   });
 
   const validate = (): boolean => {
@@ -125,29 +116,11 @@ export default function RSVPForm() {
 
   const attendanceOptions: {
     value: AttendanceOption;
-    title: string;
-    subtitle: string;
+    label: string;
   }[] = [
-    {
-      value: "sabado_sin_alojamiento",
-      title: t("rsvp.optionSatNoAccom"),
-      subtitle: t("rsvp.optionSatNoAccomSub"),
-    },
-    {
-      value: "sabado_con_alojamiento",
-      title: t("rsvp.optionSatWithAccom"),
-      subtitle: t("rsvp.optionSatWithAccomSub"),
-    },
-    {
-      value: "viernes_sabado_sin_alojamiento",
-      title: t("rsvp.optionFriSatNoAccom"),
-      subtitle: t("rsvp.optionFriSatNoAccomSub"),
-    },
-    {
-      value: "viernes_sabado_con_alojamiento",
-      title: t("rsvp.optionFriSatWithAccom"),
-      subtitle: t("rsvp.optionFriSatWithAccomSub"),
-    },
+    { value: "no", label: t("rsvp.accomOptNo") },
+    { value: "si_sabado", label: t("rsvp.accomOptSat") },
+    { value: "si_viernes_sabado", label: t("rsvp.accomOptFriSat") },
   ];
 
   if (step === "success") {
@@ -515,27 +488,18 @@ export default function RSVPForm() {
 
           <fieldset>
             <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
-              {t("rsvp.attendingOption")}{" "}
+              {t("rsvp.accommodation")}{" "}
               <span className="text-gold text-gold-contrast" aria-hidden="true">
                 *
               </span>
             </legend>
-            <div
-              className="mb-4 flex gap-3 border border-gold/50 bg-gold/[0.08] px-4 py-3"
-              role="note"
-            >
-              <span className="mt-0.5 text-gold text-gold-contrast text-base leading-none" aria-hidden="true">ℹ</span>
-              <p className="font-sans text-dark/80 text-xs leading-relaxed">
-                {t("rsvp.accommodationAlert")}
-              </p>
-            </div>
             <div className="space-y-3">
-              {attendanceOptions.map(({ value, title, subtitle }) => {
+              {attendanceOptions.map(({ value, label }) => {
                 const selected = attendanceOption === value;
                 return (
                   <label
                     key={value}
-                    className={`flex items-start gap-4 cursor-pointer p-4 border transition-colors ${
+                    className={`flex items-center gap-4 cursor-pointer p-4 border transition-colors ${
                       selected
                         ? "border-gold bg-gold/5"
                         : "border-dark/15 hover:border-gold/40"
@@ -551,7 +515,7 @@ export default function RSVPForm() {
                       aria-checked={selected}
                     />
                     <div
-                      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center transition-all ${
+                      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
                         selected ? "border-gold" : "border-dark/30"
                       }`}
                       aria-hidden="true"
@@ -560,18 +524,24 @@ export default function RSVPForm() {
                         <div className="w-1.5 h-1.5 rounded-full bg-gold" />
                       )}
                     </div>
-                    <div>
-                      <span className="block font-sans text-dark text-sm font-medium">
-                        {title}
-                      </span>
-                      <span className="block font-sans text-dark/55 text-xs mt-0.5">
-                        {subtitle}
-                      </span>
-                    </div>
+                    <span className="font-sans text-dark text-sm font-medium">
+                      {label}
+                    </span>
                   </label>
                 );
               })}
             </div>
+            {attendanceOption !== "no" && (
+              <div
+                className="mt-4 flex gap-3 border border-gold/50 bg-gold/[0.08] px-4 py-3"
+                role="note"
+              >
+                <span className="mt-0.5 text-gold text-gold-contrast text-base leading-none" aria-hidden="true">✦</span>
+                <p className="font-sans text-dark/80 text-xs leading-relaxed">
+                  {t("rsvp.accommodationAlert")}
+                </p>
+              </div>
+            )}
           </fieldset>
 
           {/* Transporte */}
@@ -618,6 +588,25 @@ export default function RSVPForm() {
               })}
             </div>
           </fieldset>
+
+          {/* Extra notes */}
+          <div>
+            <label
+              htmlFor="extra"
+              className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-3"
+            >
+              {t("rsvp.extra")}
+            </label>
+            <textarea
+              id="extra"
+              name="extra"
+              value={formData.extra}
+              onChange={handleChange}
+              placeholder={t("rsvp.extraPlaceholder")}
+              rows={3}
+              className="w-full bg-transparent border-b border-dark/20 focus:border-gold py-3 font-sans text-dark text-sm placeholder-dark/40 focus:outline-none transition-colors resize-none"
+            />
+          </div>
 
           {/* Submit */}
           <div className="pt-2">

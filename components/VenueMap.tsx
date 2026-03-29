@@ -73,6 +73,12 @@ export default function VenueMap() {
             >
               <LeafletMap />
             </div>
+            {/* Friday note */}
+            <div className="mt-6 border-l-2 border-gold/50 pl-4">
+              <p className="font-sans text-dark-soft text-sm leading-relaxed italic">
+                {t("venue.fridayNote")}
+              </p>
+            </div>
           </div>
 
           {/* Info */}

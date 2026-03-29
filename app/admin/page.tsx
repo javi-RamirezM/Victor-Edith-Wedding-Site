@@ -65,6 +65,7 @@ export default function AdminPage() {
       t("admin.colAccommodation"),
       t("admin.colAccommodationDays"),
       t("admin.colTransport"),
+      t("admin.colExtra"),
       t("admin.colDate"),
     ];
     const rows = attendees.map((a) => [
@@ -92,6 +93,7 @@ export default function AdminPage() {
           : t("rsvp.accommodationSat")
         : "",
       a.transporte === "si" ? t("rsvp.yes") : t("rsvp.no"),
+      a.extra ?? "",
       a.timestamp,
     ]);
 
