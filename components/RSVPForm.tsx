@@ -513,7 +513,6 @@ export default function RSVPForm() {
             />
           </div>
 
-          {/* Opción de asistencia — 4 combined options */}
           <fieldset>
             <legend className="block font-sans text-dark uppercase tracking-[0.25em] text-[10px] mb-4">
               {t("rsvp.attendingOption")}{" "}
@@ -521,6 +520,15 @@ export default function RSVPForm() {
                 *
               </span>
             </legend>
+            <div
+              className="mb-4 flex gap-3 border border-gold/50 bg-gold/[0.08] px-4 py-3"
+              role="note"
+            >
+              <span className="mt-0.5 text-gold text-gold-contrast text-base leading-none" aria-hidden="true">ℹ</span>
+              <p className="font-sans text-dark/80 text-xs leading-relaxed">
+                {t("rsvp.accommodationAlert")}
+              </p>
+            </div>
             <div className="space-y-3">
               {attendanceOptions.map(({ value, title, subtitle }) => {
                 const selected = attendanceOption === value;

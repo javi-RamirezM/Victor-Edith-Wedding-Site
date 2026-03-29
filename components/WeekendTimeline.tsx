@@ -7,6 +7,7 @@ interface DayCard {
   dayKey: string;
   dateKey: string;
   titleKey: string;
+  timeKey?: string;
   highlight?: boolean;
   icon: string;
 }
@@ -16,12 +17,14 @@ const DAYS: DayCard[] = [
     dayKey: "weekend.friday",
     dateKey: "weekend.fridayDate",
     titleKey: "weekend.fridayTitle",
+    timeKey: "weekend.fridayTime",
     icon: "1",
   },
   {
     dayKey: "weekend.saturday",
     dateKey: "weekend.saturdayDate",
     titleKey: "weekend.saturdayTitle",
+    timeKey: "weekend.saturdayTime",
     highlight: true,
     icon: "2",
   },
@@ -88,7 +91,7 @@ export default function WeekendTimeline() {
           className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-8"
           aria-label={t("weekend.title")}
         >
-          {DAYS.map(({ dayKey, dateKey, titleKey, highlight, icon }, i) => (
+          {DAYS.map(({ dayKey, dateKey, titleKey, timeKey, highlight, icon }, i) => (
             <li
               key={dayKey}
               className="animate-on-scroll flex flex-col items-center text-center"
@@ -158,6 +161,15 @@ export default function WeekendTimeline() {
                 >
                   {t(titleKey)}
                 </strong>
+                {timeKey && (
+                  <span
+                    className={`block font-sans text-[10px] mt-2 ${
+                      highlight ? "text-gold-light/80" : "text-dark/55"
+                    }`}
+                  >
+                    {t(timeKey)}
+                  </span>
+                )}
               </div>
             </li>
           ))}
