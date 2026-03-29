@@ -73,12 +73,6 @@ export default function VenueMap() {
             >
               <LeafletMap />
             </div>
-            {/* Friday note */}
-            <div className="mt-6 bg-gold/[0.06] px-5 py-4">
-              <p className="font-sans text-dark/70 text-sm leading-relaxed">
-                {t("venue.fridayNote")}
-              </p>
-            </div>
           </div>
 
           {/* Info */}
@@ -127,6 +121,13 @@ export default function VenueMap() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Friday note — full width below map+info grid */}
+        <div className="mt-8 animate-on-scroll bg-gold/[0.06] px-5 py-4">
+          <p className="font-sans text-dark/70 text-sm leading-relaxed">
+            {t("venue.fridayNote")}
+          </p>
         </div>
       </div>
     </section>
