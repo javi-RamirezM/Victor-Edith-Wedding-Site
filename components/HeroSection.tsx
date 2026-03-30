@@ -195,27 +195,29 @@ export default function HeroSection() {
 
       {/* Scroll cue */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-bounce drop-shadow-[0_1px_4px_rgba(0,0,0,0.18)]"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
         aria-hidden="true"
       >
-        <span className="font-sans text-dark-soft text-[13px] whitespace-nowrap">
-          {t("hero.scroll")}
-        </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="38"
-          viewBox="0 0 24 32"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-gold"
-        >
-          <polyline points="6 4 12 10 18 4" />
-          <polyline points="6 16 12 22 18 16" opacity="0.5" />
-        </svg>
+        <div className="flex flex-col items-center gap-3 animate-bounce drop-shadow-[0_1px_4px_rgba(0,0,0,0.18)]">
+          <span className="font-sans text-dark-soft text-[13px] whitespace-nowrap text-center">
+            {t("hero.scroll")}
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="38"
+            viewBox="0 0 24 32"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-gold"
+          >
+            <polyline points="6 4 12 10 18 4" />
+            <polyline points="6 16 12 22 18 16" opacity="0.5" />
+          </svg>
+        </div>
       </div>
     </section>
   );
