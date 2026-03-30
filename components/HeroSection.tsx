@@ -195,20 +195,20 @@ export default function HeroSection() {
 
       {/* Scroll cue */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-bounce drop-shadow-[0_1px_4px_rgba(0,0,0,0.18)]"
         aria-hidden="true"
       >
-        <span className="font-sans text-gold uppercase tracking-[0.3em] text-[11px]">
+        <span className="font-sans text-dark-soft text-[13px] whitespace-nowrap">
           {t("hero.scroll")}
         </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="30"
+          width="28"
+          height="38"
           viewBox="0 0 24 32"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
           className="text-gold"

@@ -1,7 +1,7 @@
 {
   "hero": {
     "invitation": "Us convidem al nostre casament",
-    "scroll": "scroll",
+    "scroll": "Llisca per veure més detalls",
     "confirmCta": "Confirmar Assistència",
     "aria": "Secció principal del casament",
     "countdownAria": "Compte enrere fins al casament"
@@ -43,7 +43,7 @@
     "label": "Lloc de Celebració",
     "descripcion": "Un entorn únic entre camps de lavanda per celebrar el nostre gran dia.",
     "fridayNote": "Com ja sabeu, el gran dia és el dissabte. Tot i això, el divendres a la tarda estarem un grupet a la finca acabant els detalls de la decoració i deixant-ho tot llest. Per als que vineu a ajudar-nos amb els preparatius, tancarem la jornada amb un picoteig informal i unes cerveses per agafar forces.",
-    "accommodationInfo": "Hi ha possibilitat de contractar allotjament a la Masia i als voltants. Indica al formulari d'assistència si estàs interessat i ens posarem en contacte amb tu el més aviat possible per indicar-te possibilitats i preus.",
+    "accommodationInfo": "Hi ha possibilitat de contractar allotjament a la Masia i als voltants. Indica al formulari d'assistència si estàs interessat i ens posarem en contacte amb tu el més aviat possible per indicar-te les possibilitats d'allotjament.",
     "address": "Adreça",
     "howToGet": "Com arribar-hi",
     "googleMapsRec": "Us recomanem usar Google Maps per a les millors indicacions.",

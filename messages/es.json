@@ -1,7 +1,7 @@
 {
   "hero": {
     "invitation": "Os invitamos a nuestra boda",
-    "scroll": "scroll",
+    "scroll": "Desliza para ver más detalles",
     "confirmCta": "Confirmar Asistencia",
     "aria": "Sección principal de la boda",
     "countdownAria": "Cuenta atrás hasta la boda"
@@ -43,7 +43,7 @@
     "label": "Lugar de Celebración",
     "descripcion": "Un entorno único entre campos de lavanda para celebrar nuestro gran día.",
     "fridayNote": "Como ya sabéis, el gran día es el sábado. Sin embargo, el viernes por la tarde estaremos un grupito en la finca ultimando detalles de decoración y dejando todo listo. Para los que venís a echarnos una mano con los preparativos, cerraremos la jornada con un picoteo informal y unas cervezas para coger fuerzas.",
-    "accommodationInfo": "Hay posibilidad de contratar alojamiento en la Masía y alrededores. Indica en el formulario de asistencia si estás interesado y nos pondremos en contacto contigo lo antes posible para indicarte posibilidades y precios.",
+    "accommodationInfo": "Hay posibilidad de contratar alojamiento en la Masía y alrededores. Indica en el formulario de asistencia si estás interesado y nos pondremos en contacto contigo lo antes posible para indicarte las posibilidades de alojamiento.",
     "address": "Dirección",
     "howToGet": "Cómo llegar",
     "googleMapsRec": "Te recomendamos usar Google Maps para las mejores indicaciones.",

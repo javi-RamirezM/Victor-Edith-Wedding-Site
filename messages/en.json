@@ -1,7 +1,7 @@
 {
   "hero": {
     "invitation": "You are invited to our wedding",
-    "scroll": "scroll",
+    "scroll": "Scroll to see more details",
     "confirmCta": "Confirm Attendance",
     "aria": "Wedding main section",
     "countdownAria": "Countdown to the wedding"
@@ -43,7 +43,7 @@
     "label": "Venue",
     "descripcion": "A unique setting among lavender fields to celebrate our big day.",
     "fridayNote": "As you know, the big day is Saturday. However, on Friday afternoon a small group of us will be at the venue putting the finishing touches on the decorations and getting everything ready. For those of you coming to help us with the preparations, we will round off the evening with an informal spread and a few beers to keep our energy up.",
-    "accommodationInfo": "There is the possibility of booking accommodation at the Masía and surroundings. Let us know in the attendance form if you are interested and we will get in touch as soon as possible to share options and prices.",
+    "accommodationInfo": "There is the possibility of booking accommodation at the Masía and surroundings. Let us know in the attendance form if you are interested and we will get in touch as soon as possible to share the accommodation options.",
     "address": "Address",
     "howToGet": "How to get there",
     "googleMapsRec": "We recommend using Google Maps for the best directions.",
