@@ -13,6 +13,7 @@ export interface RSVPData {
   alojamiento: "si" | "no";
   alojamiento_dias: "viernes_sabado" | "solo_sabado" | "";
   transporte: "si" | "no";
+  extra: string;
   timestamp?: string;
 }
 
@@ -29,6 +30,7 @@ export interface Attendee {
   alojamiento?: "si" | "no";
   alojamiento_dias?: "viernes_sabado" | "solo_sabado" | "";
   transporte?: "si" | "no";
+  extra?: string;
   timestamp: string;
 }
 

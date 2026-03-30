@@ -62,7 +62,8 @@ const EXPECTED_HEADERS = [
   'Trona',
   'Alojamiento',
   'Alojamiento Días',
-  'Transporte'
+  'Transporte',
+  'Extra'
 ]
 
 function ensureHeaders(sheet) {
@@ -102,7 +103,8 @@ function submitRSVP(data) {
     data.ninos === 'si' ? (data.trona === 'si' ? 'Sí' : 'No') : 'No',
     data.alojamiento === 'si' ? 'Sí' : 'No',
     alojamientoDias,
-    data.transporte === 'si' ? 'Sí' : 'No'
+    data.transporte === 'si' ? 'Sí' : 'No',
+    data.extra || ''
   ])
 
   return ContentService.createTextOutput(
@@ -135,7 +137,8 @@ function getAttendees() {
     trona: row[9] === 'Sí' ? 'si' : 'no',
     alojamiento: row[10] === 'Sí' ? 'si' : 'no',
     alojamiento_dias: row[11] === 'Viernes + Sábado' ? 'viernes_sabado' : (row[11] === 'Solo Sábado' ? 'solo_sabado' : ''),
-    transporte: row[12] === 'Sí' ? 'si' : 'no'
+    transporte: row[12] === 'Sí' ? 'si' : 'no',
+    extra: row[13] || ''
   }))
 
   return ContentService.createTextOutput(
@@ -158,6 +161,7 @@ function test() {
     alojamiento: 'si',
     alojamiento_dias: 'viernes_sabado',
     transporte: 'no',
+    extra: 'Pregunta de prueba',
     timestamp: new Date().toISOString()
   }
 
