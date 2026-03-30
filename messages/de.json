@@ -1,7 +1,7 @@
 {
   "hero": {
     "invitation": "Wir laden euch zu unserer Hochzeit ein",
-    "scroll": "scrollen",
+    "scroll": "Nach unten wischen für mehr Details",
     "confirmCta": "Teilnahme bestätigen",
     "aria": "Hauptbereich der Hochzeit",
     "countdownAria": "Countdown bis zur Hochzeit"
@@ -43,7 +43,7 @@
     "label": "Veranstaltungsort",
     "descripcion": "Ein einzigartiger Ort inmitten von Lavendelfeldern, um unseren großen Tag zu feiern.",
     "fridayNote": "Wie ihr wisst, ist der große Tag der Samstag. Am Freitagnachmittag werden wir jedoch mit einer kleinen Gruppe auf dem Gut sein, um die letzten Details der Dekoration fertigzustellen und alles vorzubereiten. Für die, die uns bei den Vorbereitungen helfen möchten, beenden wir den Tag mit einem gemütlichen Imbiss und ein paar Bieren, um Kraft zu tanken.",
-    "accommodationInfo": "Es besteht die Möglichkeit, Unterkunft in der Masía und Umgebung zu buchen. Gebt im Anmeldeformular an, ob ihr interessiert seid, und wir melden uns so schnell wie möglich mit Optionen und Preisen.",
+    "accommodationInfo": "Es besteht die Möglichkeit, Unterkunft in der Masía und Umgebung zu buchen. Gebt im Anmeldeformular an, ob ihr interessiert seid, und wir melden uns so schnell wie möglich mit den Unterkunftsmöglichkeiten.",
     "address": "Adresse",
     "howToGet": "Anfahrt",
     "googleMapsRec": "Wir empfehlen Google Maps für die beste Wegbeschreibung.",
