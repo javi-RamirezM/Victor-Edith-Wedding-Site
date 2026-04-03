@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { submitRSVP, RSVPData } from "@/lib/sheets";
-import { Heart, CheckCircle, AlertCircle } from "lucide-react";
+import { Heart, CheckCircle, AlertCircle, Minus, Plus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 type FormStep = "form" | "submitting" | "success" | "error";
@@ -37,13 +37,7 @@ export default function RSVPForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof RSVPData, string>>>(
     {},
   );
-  type FormData = Omit<
-    RSVPData,
-    "total_asistentes" | "num_menus_infantiles"
-  > & {
-    total_asistentes: number | "";
-    num_menus_infantiles: number | "";
-  };
+  type FormData = RSVPData;
   const [attendanceOption, setAttendanceOption] = useState<AttendanceOption>(
     "no",
   );
@@ -68,11 +62,7 @@ export default function RSVPForm() {
     if (!formData.nombre.trim()) {
       newErrors.nombre = t("rsvp.validationName");
     }
-    if (
-      formData.total_asistentes === "" ||
-      formData.total_asistentes < 1 ||
-      formData.total_asistentes > 20
-    ) {
+    if (formData.total_asistentes < 1 || formData.total_asistentes > 20) {
       newErrors.total_asistentes = t("rsvp.validationCount");
     }
     setErrors(newErrors);
@@ -83,12 +73,7 @@ export default function RSVPForm() {
     e.preventDefault();
     if (!validate()) return;
     setStep("submitting");
-    const payload: RSVPData = {
-      ...formData,
-      total_asistentes: Number(formData.total_asistentes),
-      num_menus_infantiles: Number(formData.num_menus_infantiles || 0),
-    };
-    const success = await submitRSVP(payload);
+    const success = await submitRSVP(formData);
     setStep(success ? "success" : "error");
   };
 
@@ -103,17 +88,9 @@ export default function RSVPForm() {
         ...prev,
         [name]:
           name === "total_asistentes"
-            ? value === ""
-              ? ""
-              : Number.isNaN(parseInt(value, 10))
-                ? ""
-                : parseInt(value, 10)
+            ? parseInt(value, 10) || 1
             : name === "num_menus_infantiles"
-              ? value === ""
-                ? ""
-                : Number.isNaN(parseInt(value, 10))
-                  ? ""
-                  : parseInt(value, 10)
+              ? parseInt(value, 10) || 1
               : value,
       };
       // Reset conditional fields when parent switches to 'no'
@@ -136,6 +113,22 @@ export default function RSVPForm() {
     setAttendanceOption(option);
     const derived = deriveFromOption(option);
     setFormData((prev) => ({ ...prev, ...derived }));
+  };
+
+  const adjustCount = (
+    field: "total_asistentes" | "num_menus_infantiles",
+    delta: number,
+    min: number,
+    max: number,
+  ) => {
+    setFormData((prev) => {
+      const current = prev[field] ?? min;
+      const next = Math.min(max, Math.max(min, current + delta));
+      return { ...prev, [field]: next };
+    });
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
   };
 
   const attendanceOptions: {
@@ -274,26 +267,45 @@ export default function RSVPForm() {
                 *
               </span>
             </label>
-            <input
-              id="total_asistentes"
-              name="total_asistentes"
-              type="number"
-              min="1"
-              max="20"
-              value={formData.total_asistentes}
-              onChange={handleChange}
-              required
-              aria-required="true"
-              aria-invalid={!!errors.total_asistentes}
-              aria-describedby={
-                errors.total_asistentes ? "total-error" : undefined
-              }
-              className={`w-full bg-transparent border-b py-3 font-sans text-dark text-sm focus:outline-none transition-colors ${
+            <div
+              className={`flex items-center justify-between border-b py-2 transition-colors ${
                 errors.total_asistentes
                   ? "border-red-300"
-                  : "border-dark/20 focus:border-gold"
+                  : "border-dark/20 focus-within:border-gold"
               }`}
-            />
+            >
+              <button
+                type="button"
+                onClick={() => adjustCount("total_asistentes", -1, 1, 20)}
+                aria-label={`${t("rsvp.howMany")} -1`}
+                className="w-10 h-10 flex items-center justify-center border border-dark/20 text-dark hover:border-gold/60 transition-colors"
+              >
+                <Minus className="w-4 h-4" aria-hidden="true" />
+              </button>
+              <input
+                id="total_asistentes"
+                name="total_asistentes"
+                type="text"
+                inputMode="none"
+                value={formData.total_asistentes}
+                readOnly
+                required
+                aria-required="true"
+                aria-invalid={!!errors.total_asistentes}
+                aria-describedby={
+                  errors.total_asistentes ? "total-error" : undefined
+                }
+                className="w-16 text-center bg-transparent font-sans text-dark text-base focus:outline-none select-none"
+              />
+              <button
+                type="button"
+                onClick={() => adjustCount("total_asistentes", 1, 1, 20)}
+                aria-label={`${t("rsvp.howMany")} +1`}
+                className="w-10 h-10 flex items-center justify-center border border-dark/20 text-dark hover:border-gold/60 transition-colors"
+              >
+                <Plus className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </div>
             {errors.total_asistentes && (
               <p
                 id="total-error"
@@ -428,19 +440,37 @@ export default function RSVPForm() {
               >
                 {t("rsvp.childrenMenuCount")}
               </label>
-              <select
-                id="num_menus_infantiles"
-                name="num_menus_infantiles"
-                value={formData.num_menus_infantiles}
-                onChange={handleChange}
-                className="w-full bg-transparent border-b border-dark/20 focus:border-gold py-3 font-sans text-dark text-sm focus:outline-none transition-colors"
-              >
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
+              <div className="flex items-center justify-between border-b border-dark/20 py-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    adjustCount("num_menus_infantiles", -1, 1, 10)
+                  }
+                  aria-label={`${t("rsvp.childrenMenuCount")} -1`}
+                  className="w-9 h-9 flex items-center justify-center border border-dark/20 text-dark hover:border-gold/60 transition-colors"
+                >
+                  <Minus className="w-4 h-4" aria-hidden="true" />
+                </button>
+                <input
+                  id="num_menus_infantiles"
+                  name="num_menus_infantiles"
+                  type="text"
+                  inputMode="none"
+                  value={formData.num_menus_infantiles}
+                  readOnly
+                  className="w-14 text-center bg-transparent font-sans text-dark text-base focus:outline-none select-none"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    adjustCount("num_menus_infantiles", 1, 1, 10)
+                  }
+                  aria-label={`${t("rsvp.childrenMenuCount")} +1`}
+                  className="w-9 h-9 flex items-center justify-center border border-dark/20 text-dark hover:border-gold/60 transition-colors"
+                >
+                  <Plus className="w-4 h-4" aria-hidden="true" />
+                </button>
+              </div>
             </div>
           )}
 
