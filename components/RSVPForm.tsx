@@ -37,10 +37,17 @@ export default function RSVPForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof RSVPData, string>>>(
     {},
   );
+  type FormData = Omit<
+    RSVPData,
+    "total_asistentes" | "num_menus_infantiles"
+  > & {
+    total_asistentes: number | "";
+    num_menus_infantiles: number | "";
+  };
   const [attendanceOption, setAttendanceOption] = useState<AttendanceOption>(
     "no",
   );
-  const [formData, setFormData] = useState<RSVPData>({
+  const [formData, setFormData] = useState<FormData>({
     nombre: "",
     total_asistentes: 1,
     nombres_acompanantes: "",
@@ -61,7 +68,11 @@ export default function RSVPForm() {
     if (!formData.nombre.trim()) {
       newErrors.nombre = t("rsvp.validationName");
     }
-    if (formData.total_asistentes < 1 || formData.total_asistentes > 20) {
+    if (
+      formData.total_asistentes === "" ||
+      formData.total_asistentes < 1 ||
+      formData.total_asistentes > 20
+    ) {
       newErrors.total_asistentes = t("rsvp.validationCount");
     }
     setErrors(newErrors);
@@ -72,7 +83,12 @@ export default function RSVPForm() {
     e.preventDefault();
     if (!validate()) return;
     setStep("submitting");
-    const success = await submitRSVP(formData);
+    const payload: RSVPData = {
+      ...formData,
+      total_asistentes: Number(formData.total_asistentes),
+      num_menus_infantiles: Number(formData.num_menus_infantiles || 0),
+    };
+    const success = await submitRSVP(payload);
     setStep(success ? "success" : "error");
   };
 
@@ -87,9 +103,17 @@ export default function RSVPForm() {
         ...prev,
         [name]:
           name === "total_asistentes"
-            ? parseInt(value, 10) || 1
+            ? value === ""
+              ? ""
+              : Number.isNaN(parseInt(value, 10))
+                ? ""
+                : parseInt(value, 10)
             : name === "num_menus_infantiles"
-              ? parseInt(value, 10) || 1
+              ? value === ""
+                ? ""
+                : Number.isNaN(parseInt(value, 10))
+                  ? ""
+                  : parseInt(value, 10)
               : value,
       };
       // Reset conditional fields when parent switches to 'no'
